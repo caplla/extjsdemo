@@ -1,0 +1,33 @@
+[
+  {
+    "id": "111",
+    "text": "系统管理",
+    "href": null,
+    "leaf": false,
+    "iconCls": "fa fa-home",
+    "module_id": "no sign",
+    "qtip": "这个地方显示鼠标悬停提示",
+    "children": [
+      {
+        "id": "11111",
+        "text": "用户管理",
+        "href": null,
+        "leaf": true,
+        "iconCls": "fa fa-user",
+        "module_id": "sys.UserController",
+        "qtip": "系统用户管理",
+        "children": []
+      },
+      {
+        "id": "2222",
+        "text": "例子",
+        "href": null,
+        "leaf": true,
+        "iconCls": "fa fa-bars",
+        "module_id": "sys.TreeController",
+        "qtip": "一堆乱七八糟的例子",
+        "children": []
+      }
+    ]
+  }
+]
