@@ -78,6 +78,17 @@ var icon_prefix = " fa blue-color ", baseConfig = {
             name: "角色名称",
             is_reserved: "系统角色?",
             description: "备注"
+        },
+        resource: {
+            id: 'ID',
+            text: '节点名称',
+            pid: '父节点',
+            href: '链接',
+            module_id: '模块id',
+            iconCls: 'font图标',
+            resource_type: '类型',
+            qtip: '提示文本'
+
         }
     }
 };

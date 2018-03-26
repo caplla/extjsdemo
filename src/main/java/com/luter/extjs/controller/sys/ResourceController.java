@@ -13,8 +13,10 @@ import com.luter.extjs.util.ConditionQuery;
 import com.luter.extjs.util.OrderBy;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +40,16 @@ public class ResourceController {
         List<TSResource> objs = ss.listPageByConditionQueryInOrderWithOffset(TSResource.class, query, orderBy, pager.getStart(), pager.getLimit());
         int count = ss.getCountByConditionQuery(TSResource.class, query);
         return new ExtDataModel<>().ok(count, objs);
+    }
+
+    @GetMapping("/tree/async")
+    public Object asyncTree(HttpServletRequest request) {
+        Long pid = ServletRequestUtils.getLongParameter(request, "node", -100);
+        if (pid >= -1) {
+            List<TSResource> childs = ss.findByProperty(TSResource.class, "pid", pid);
+            return ResponseEntity.ok(childs);
+        }
+        return ResponseEntity.status(500).body("父节点ID不对");
     }
 
     @PostMapping("/get")
