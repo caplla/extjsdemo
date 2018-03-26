@@ -72,6 +72,12 @@ var icon_prefix = " fa blue-color ", baseConfig = {
             username: '用户名',
             age: '年龄',
             gender: '性别'
+        },
+        role: {
+            id: "ID",
+            name: "角色名称",
+            is_reserved: "系统角色?",
+            description: "备注"
         }
     }
 };

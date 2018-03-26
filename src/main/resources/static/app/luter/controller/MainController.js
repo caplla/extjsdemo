@@ -28,7 +28,7 @@ Ext.define('luter.controller.MainController', {
                     if (tabcount && tabcount > 5) {
                         showFailMesg({
                             title: '为了更好的使用，最多允许打开5个页面',
-                            msg: '您打开的页面过多，请关掉一些!'
+                            message: '您打开的页面过多，请关掉一些!'
                         });
                         return false;
                     }
@@ -37,7 +37,7 @@ Ext.define('luter.controller.MainController', {
                         if (!moduleID || moduleID == '') {
                             showFailMesg({
                                 title: '创建模块失败.',
-                                msg: '模块加载错误，模块id为空，创建模块失败'
+                                message: '模块加载错误，模块module_id为空，创建模块失败'
                             });
                             return false;
                         }
@@ -47,7 +47,7 @@ Ext.define('luter.controller.MainController', {
                             var module = luterapp.getController(moduleID);
                         } catch (error) {
                             showFailMesg({
-                                msg: '根据模块ID:' + moduleID + '创建模块失败。' +
+                                message: '根据模块ID:' + moduleID + '创建模块失败。' +
                                 '<br> 可能的原因 :<br>1、该模块当前没有实现.' +
                                 '<br> 2、模块文件名称与模块名称不一致，请检查' +
                                 '</br><span style="color: red">Error: ' + error + '</span>'
@@ -59,7 +59,7 @@ Ext.define('luter.controller.MainController', {
                         //判断模块是否加载下来，因为是ajax加载，所以还是判断一下比较好
                         if (!module) {
                             showFailMesg({
-                                msg: 'B:load module fail,the module object is null.' +
+                                message: 'B:load module fail,the module object is null.' +
                                 '<br> maybe :the module is Not available now.'
                             });
                             return false;
@@ -72,7 +72,7 @@ Ext.define('luter.controller.MainController', {
                         console.log('get the view el:' + view);
                         if (!view) {
                             showFailMesg({
-                                msg: 'Sorry ,to get the module view fail...'
+                                message: 'Sorry ,to get the module view fail...'
                             });
                             return false;
                         }
@@ -84,7 +84,7 @@ Ext.define('luter.controller.MainController', {
                         var viewEL = view.create();
                         if (!viewEL) {
                             showFailMesg({
-                                msg: 'Sorry ,to get the module viewEL fail...'
+                                message: 'Sorry ,to get the module viewEL fail...'
                             });
                             return false;
                         }

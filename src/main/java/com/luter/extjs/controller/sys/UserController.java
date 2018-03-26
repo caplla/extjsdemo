@@ -1,4 +1,4 @@
-package com.luter.extjs.controller;
+package com.luter.extjs.controller.sys;
 
 import com.luter.extjs.entity.TSUser;
 import com.luter.extjs.ext.ExtDataModel;

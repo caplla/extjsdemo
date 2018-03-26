@@ -19,6 +19,7 @@ public class ExtTreeModel implements Serializable {
     /*树节点的样式*/
     private String iconCls;
     private String qtip;
+    private String module_id;
     //父节点ID
     private String pid;
     List<ExtTreeModel> children = new ArrayList<>();

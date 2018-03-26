@@ -4,7 +4,7 @@ Ext.define('luter.store.NavTreeStore', {
     autoLoad: true,
     proxy: {
         type: 'ajax',
-        url: '/app/testdata/menu.json',
+        url: '/resource/getSysUserTreeData',
         reader: {
             type: 'json',
             root: 'children',

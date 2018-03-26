@@ -1,6 +1,7 @@
 package com.luter.extjs.controller;
 
 
+import com.luter.extjs.config.R;
 import com.luter.extjs.entity.TSTree;
 import com.luter.extjs.ext.ExtTreeModel;
 import com.luter.extjs.service.base.BaseService;
@@ -27,7 +28,6 @@ public class TreeController {
 
     @GetMapping("/index")
     public Object index(HttpServletRequest request) {
-
         return "/tree/index";
     }
 

@@ -37,6 +37,16 @@
         "module_id": "ComboDemoController",
         "qtip": "下拉框示例",
         "children": []
+      },
+      {
+        "id": "4444",
+        "text": "角色权限",
+        "href": null,
+        "leaf": true,
+        "iconCls": "fa fa-group",
+        "module_id": "sys.RoleController",
+        "qtip": "角色管理与授权",
+        "children": []
       }
     ]
   }
