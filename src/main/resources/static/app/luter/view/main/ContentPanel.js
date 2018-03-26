@@ -6,25 +6,27 @@ Ext.define('luter.view.main.ContentPanel', {
     alias: 'widget.syscontentpanel',
     border: false,
     requires: ['luter.view.main.Index'],
-    // plugins: [Ext.create('luter.ux.TabCloseMenu', {//用到了一个tab右键关闭插件
-    //     closeTabText: '关闭当前页',
-    //     closeOthersTabsText: '关闭其他页',
-    //     closeAllTabsText: '关闭所有页',
-    //     closeIcon: +' fa fa-remove red-color',
-    //     closeOtherIcon: ' fa fa-remove red-color',
-    //     closeAllIcon: 'fa fa-remove red-color',
-    // })],
+    plugins: [Ext.create('luter.ux.TabCloseMenu', {//用到了一个tab右键关闭插件
+        closeTabText: '关闭当前页',
+        closeOthersTabsText: '关闭其他页',
+        closeAllTabsText: '关闭所有页',
+        closeIcon: +' fa fa-remove red-color',
+        closeOtherIcon: ' fa fa-remove red-color',
+        closeAllIcon: 'fa fa-remove red-color',
+    })],
     items: [{
         id: 'dashboardpanel',
-        title: 'DASHBOARD',
+        title: '首页',
         baseCls: 'home-body',
         closeable: false,
-        layout: 'fit',
-        glyph: 42, items: [
-            {
-                xtype: 'indexview',
-            }
-        ]
+        layout: 'fit'
+        //首页图表示例
+        // ,
+        // glyph: 42, items: [
+        //     {
+        //         xtype: 'indexview',
+        //     }
+        // ]
     }]
 
 });

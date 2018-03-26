@@ -4,7 +4,7 @@
 function showSucMesg(config) {
     Ext.Msg.show({
         title: '成功',
-        msg: config.msg || '',
+        msg: config.message || '',
         width: 400,
         buttons: Ext.Msg.OK,
         icon: Ext.MessageBox.INFO,
@@ -18,7 +18,7 @@ function showSucMesg(config) {
 function showFailMesg(config) {
     Ext.Msg.show({
         title: config.title || '失败',
-        msg: config.msg || '',
+        msg: config.message || '',
         width: 450,
         buttons: Ext.Msg.OK,
         icon: Ext.MessageBox.ERROR,
@@ -36,47 +36,26 @@ function DealAjaxResponse(response) {
     if (response) {
         if (response.status > '399' || response.status == 0) {
             showFailMesg({
-                msg: '请求出现错误:<br/>错误代码:' + response.status + ',' +
+                message: '请求出现错误:<br/>错误代码:' + response.status + ',' +
                 '<br/>错误内容：' + response.statusText + '<br/>' +
                 '这表示您要访问的内容出现错误或者暂时无法提供服务，请联系您的系统管理员！' +
                 '<br/>Request URL:' + response.request.options.url + '<br>Response: ' + response.responseText
             });
         } else {
-            try {
-                var result = Ext.JSON.decode(response.responseText);
-                if (result.success) {
-                    if (result.total == 0 || result.total == 'undefined') {
-                        Ext.msgs.msg('提示：', '暂无记录！');
-                    }
-                    showSucMesg(result);
-                } else {
-                    if (result.code == 0) {
-                        showFailMesg(result);
-                        window.location = "login";
-                    } else {
-                        showFailMesg(result);
-                    }
+            var result = Ext.JSON.decode(response.responseText);
+            if (result.success) {
+                if (result.total == 0 || result.total == 'undefined') {
 
                 }
-            } catch (error) {
-                console.log(error);
-                showFailMesg({
-                    msg: ':<> O!Sorry :Try to decode response message to json faild.' +
-                    '<br> This  means that the server reject you request.' +
-                    '<br> Please contact your administrator for help.' +
-                    '</br><span class="red-color">Error: ' + error + '</span>'
-                });
-                return false;
-            } finally {
-
+                showSucMesg(result);
+            } else {
+                showFailMesg(result);
             }
-
-
         }
     }
     else {
         showFailMesg({
-            msg: '发生错误'
+            message: '发生错误'
         });
     }
 
@@ -96,13 +75,6 @@ function showConfirmMesg(config) {
     Ext.MessageBox.buttonText.yes = '<i   class=" fa fa-th fa-check">是</i>';
     Ext.MessageBox.buttonText.no = '<i   class=" fa fa-th fa-close">否</i>';
     Ext.MessageBox.buttonText.cancel = '<i class=" fa fa-lg fa-undo">取消</i>';
-    //Ext.Msg.show({
-    //    title: constant.title||'提示',
-    //    msg: constant.msg || '',
-    //    buttons: Ext.Msg.OK,
-    //    icon: Ext.MessageBox.INFO,
-    //    fn: constant.fn || ''
-    //});
     Ext.Msg.show({
         title: config.title || '确认吗?',
         message: config.message + '<br>点击"是"确认。点击"否"退出操作' || '',
@@ -116,7 +88,7 @@ var showToastMessage = function (message, alignTo) {
     Ext.toast({
         cls: 'toast-window',
         header: false,
-        width:200,
+        width: 200,
         html: '<div class="toast">' + message + '</div>',
         animate: true,
         slideInAnimation: 'ease',
@@ -136,7 +108,7 @@ function loadFormDataFromDb(view, url) {
     var form = view.down('form');
     if (!view || !form || !url) {
         showFailMesg({
-            msg: 'view 参数或者url参数不能为空，请确认'
+            message: 'view 参数或者url参数不能为空，请确认'
         });
         return false;
     }
@@ -147,12 +119,12 @@ function loadFormDataFromDb(view, url) {
         },
         failure: function (obj, action) {
             if (action && action.result) {
-                action.result.msg = action.result.msg + "<br>uri :" + action.url;
+                action.result.message = action.result.message + "<br>uri :" + action.url;
                 showFailMesg(action.result);
                 return false;
             }
             showFailMesg({
-                msg: '返回信息为空，获取失败，请检查服务器是否正确返回了对应记录<br>url:' + url
+                message: '返回信息为空，获取失败，请检查服务器是否正确返回了对应记录<br>url:' + url
             })
         }
     });
@@ -164,7 +136,7 @@ function loadFormDataFromDb(view, url) {
     //         failure: function (me, response) {
     //
     //             showFailMesg({
-    //                 msg: '获取数据失败，请检查服务器是否正确返回了对应记录。url:'+url
+    //                 message: '获取数据失败，请检查服务器是否正确返回了对应记录。url:'+url
     //             })
     //         }
     //     });

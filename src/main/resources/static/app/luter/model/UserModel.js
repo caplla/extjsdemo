@@ -4,6 +4,6 @@ Ext.define('luter.model.UserModel', {
         {name: 'id', type: 'string'},
         {name: 'username', type: 'string'},
         {name: 'gender', type: 'string'},
-        {name: 'real_name', type: 'string'}
+        {name: 'age', type: 'int'}
     ]
 });

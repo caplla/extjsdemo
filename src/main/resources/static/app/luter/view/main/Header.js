@@ -22,7 +22,7 @@ Ext.define('luter.view.main.Header', {
                 padding: '0px 10px 0px  55px',
                 fontWeight: 900
             },
-            text: '这里是系统标题'
+            text: 'Extjs6.2.0DEMO'
         },{
             xtype: 'image',
             cls: 'circle-pic',

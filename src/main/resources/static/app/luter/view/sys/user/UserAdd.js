@@ -1,7 +1,7 @@
 Ext.define('luter.view.sys.user.UserAdd', {
     extend: 'Ext.window.Window',//扩展window组件
     alias: 'widget.useraddview',
-    requires: [],
+    requires: ['luter.combo.GenderCombo'],
     constrain: true,//约束窗体弹出，别出浏览器可视范围
     modal: true,//模态
     maximizable: true,//可以最大化
@@ -9,6 +9,7 @@ Ext.define('luter.view.sys.user.UserAdd', {
     layout: "fit",//自适应布局
     width: 700,
     autoHeight: true,//自适应高度
+    minHeight:300,
     viewModel: {
         data: {
             title: ''
@@ -39,7 +40,7 @@ Ext.define('luter.view.sys.user.UserAdd', {
                 var form = this.down('form');
                 if (form.isValid()) {
                     form.submit({
-                        url: 'sys/user/add',
+                        url: '/user/create',
                         method: 'POST',
                         waitTitle: "提示",
                         waitMsg: '正在提交数据，请稍后 ……',
@@ -86,19 +87,25 @@ Ext.define('luter.view.sys.user.UserAdd', {
                 bind: '{title}',//mvvm数据绑定，输入的时候同步就显示在win的title上了
                 allowBlank: false,
                 flex: 1
-            },
-                {
-                    xtype: "textfield",
-                    fieldLabel: baseConfig.model.user.real_name,
-                    name: 'real_name',
-                    maxLength: 10,
-                    maxLengthText: '请输入{0}个字以内',
-                    emptyText: '真实姓名',
-                    allowBlank: false,
-                    flex: 1
-                }
-
-            ]
+            }, {
+                xtype: "gendercombo",
+                fieldLabel: baseConfig.model.user.gender,
+                name: 'gender',
+                emptyText: '请选择',
+                allowBlank: false,
+                flex: 1
+            }, {
+                xtype: "numberfield",
+                fieldLabel: baseConfig.model.user.age,
+                name: 'age',
+                emptyText: '请输入年纪',
+                allowBlank: false,
+                minValue: 1,
+                minText: '你出生没?',
+                maxValue: 200,
+                maxText: '这么大年纪是王八！！！',
+                flex: 1
+            }]
 
         }]);
 

@@ -1,7 +1,7 @@
 Ext.define('luter.view.sys.user.UserEdit', {
     extend: 'Ext.window.Window',//扩展window组件
     alias: 'widget.usereditview',
-    requires: [],
+    requires: ['luter.combo.GenderCombo'],
     constrain: true,//约束窗体弹出，别出浏览器可视范围
     modal: true,//模态
     maximizable: true,//可以最大化
@@ -9,6 +9,7 @@ Ext.define('luter.view.sys.user.UserEdit', {
     layout: "fit",//自适应布局
     width: 700,
     autoHeight: true,//自适应高度
+    minHeight:300,
     initComponent: function () {
         var me = this;
         //加入一个表单，表单内元素通过loadView方法添加
@@ -24,18 +25,18 @@ Ext.define('luter.view.sys.user.UserEdit', {
         }]
         //操作按钮直接加载window上
         me.buttons = ['->', {
-            text: '新增',
+            text: '修改',
             cls: 'green-btn',
-            iconCls: baseConfig.appicon.add,
+            iconCls: baseConfig.appicon.update,
             handler: function () {
                 var form = this.down('form');
                 if (form.isValid()) {
                     form.submit({
-                        url: 'sys/user/update',
+                        url: '/user/update',
                         method: 'POST',
                         waitTitle: "提示",
                         waitMsg: '正在提交数据，请稍后 ……',
-                        success: function (form, action) {//添加成功后提示消息，并且刷新用户列表数据
+                        success: function (form, action) {
                             me.close();
                             DealAjaxResponse(action.response);
                             Ext.data.StoreManager.lookup('UserStore').load();
@@ -79,19 +80,25 @@ Ext.define('luter.view.sys.user.UserEdit', {
                 emptyText: '登录用的用户名',
                 allowBlank: false,
                 flex: 1
-            },
-                {
-                    xtype: "textfield",
-                    fieldLabel: baseConfig.model.user.real_name,
-                    name: 'real_name',
-                    maxLength: 10,
-                    maxLengthText: '请输入{0}个字以内',
-                    emptyText: '真实姓名',
-                    allowBlank: false,
-                    flex: 1
-                }
-
-            ]
+            }, {
+                xtype: "gendercombo",
+                fieldLabel: baseConfig.model.user.gender,
+                name: 'gender',
+                emptyText: '请选择',
+                allowBlank: false,
+                flex: 1
+            }, {
+                xtype: "numberfield",
+                fieldLabel: baseConfig.model.user.age,
+                name: 'age',
+                emptyText: '请输入年纪',
+                allowBlank: false,
+                minValue: 1,
+                minText: '你出生没?',
+                maxValue: 200,
+                maxText: '这么大年纪是王八！！！',
+                flex: 1
+            }]
 
         }]);
 

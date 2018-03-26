@@ -70,7 +70,8 @@ var icon_prefix = " fa blue-color ", baseConfig = {
         user: {
             id: 'ID',
             username: '用户名',
-            real_name: '真实姓名'
+            age: '年龄',
+            gender: '性别'
         }
     }
 };

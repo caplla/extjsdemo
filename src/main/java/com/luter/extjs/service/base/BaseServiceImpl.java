@@ -2,6 +2,7 @@ package com.luter.extjs.service.base;
 
 
 import com.luter.extjs.util.ConditionQuery;
+import com.luter.extjs.util.OrderBy;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -24,7 +25,9 @@ import java.util.List;
 @Service
 @Transactional
 public class BaseServiceImpl implements BaseService {
-    static final int DEFAULT_PAGE_SIZE = 10;
+    static final int DEFAULT_PAGE_SIZE = 20;
+    static final int DEFAULT_PAGE_NO = 1;
+    static final int DEFAULT_OFFSET = 0;//从第几个记录开始
     @PersistenceContext
     private EntityManager em;
 
@@ -116,6 +119,20 @@ public class BaseServiceImpl implements BaseService {
     public <T> T findUniqueByProperty(Class<T> entityClass, String propertyName, Object value) {
         return null;
     }
+
+    @Override
+    public <T> List<T> listPageByConditionQueryInOrderWithOffset(Class<T> entityClass, ConditionQuery query, OrderBy orderBy, int offset, int pageSize) {
+        Criteria criteria = getSession().createCriteria(entityClass);
+        query.build(criteria);
+        orderBy.build(criteria);
+        offset = offset < DEFAULT_OFFSET ? DEFAULT_OFFSET : offset;
+        pageSize = pageSize < 1 || pageSize > DEFAULT_PAGE_SIZE ? DEFAULT_PAGE_SIZE : pageSize;
+        log.info("pageSize:" + pageSize + ",offset:" + offset);
+        criteria.setFirstResult(offset);
+        criteria.setMaxResults(pageSize);
+        return criteria.list();
+    }
+
     private <T> Criteria createCriteria(Class<T> entityClass, Criterion... criterions) {
         Criteria criteria = getSession().createCriteria(entityClass);
         for (Criterion c : criterions) {

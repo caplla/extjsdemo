@@ -14,11 +14,11 @@ Ext.define('luter.store.UserStore', {
             destroy: 'POST'
         },
         api: {
-            read: '/app/testdata/users.json'
+            read: '/user/list'
         },
         reader: {
             type: 'json',
-            root: 'root',
+            root: 'data',
             successProperty: 'success',
             totalProperty: 'total'
         },

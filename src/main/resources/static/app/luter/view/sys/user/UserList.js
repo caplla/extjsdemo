@@ -35,24 +35,24 @@ Ext.define('luter.view.sys.user.UserList', {
                             fn: function (btn) {
                                 if (btn === 'yes') {
                                     showToastMessage('啥意思?');
-                                    // Ext.Ajax.request({
-                                    //     url: 'sys/user/delete',
-                                    //     method: 'POST',
-                                    //     params: {
-                                    //         id: record.get('id')
-                                    //     },
-                                    //     success: function (response, options) {
-                                    //         DealAjaxResponse(response);
-                                    //         Ext.data.StoreManager.lookup('UserStore').load();
-                                    //     },
-                                    //     failure: function (response, options) {
-                                    //         DealAjaxResponse(response);
-                                    //     }
-                                    // });
+                                    Ext.Ajax.request({
+                                        url: '/user/delete',
+                                        method: 'POST',
+                                        params: {
+                                            id: record.get('id')
+                                        },
+                                        success: function (response, options) {
+                                            DealAjaxResponse(response);
+                                            Ext.data.StoreManager.lookup('UserStore').load();
+                                        },
+                                        failure: function (response, options) {
+                                            DealAjaxResponse(response);
+                                        }
+                                    });
                                 } else {
                                     Ext.toast({
-                                        title:'看...',
-                                        width:200,
+                                        title: '看...',
+                                        width: 200,
                                         html: '不删了.....'
                                     });
                                     return false;
@@ -78,8 +78,13 @@ Ext.define('luter.view.sys.user.UserList', {
                 flex: 1
             },
             {
-                header: baseConfig.model.user.real_name,
-                dataIndex: 'real_name',
+                header: baseConfig.model.user.age,
+                dataIndex: 'age',
+                flex: 1
+            },
+            {
+                header: baseConfig.model.user.gender,
+                dataIndex: 'gender',
                 flex: 1
             }
         ]
@@ -110,14 +115,14 @@ Ext.define('luter.view.sys.user.UserList', {
             }]
         }]
         me.listeners = {
-            'itemdblclick': function (table, record, html, row, event, opt) {
+            'itemdblclick': function (table, record) {
                 if (record) {
                     var id = record.get('id');
                     var view = Ext.create('luter.view.sys.user.UserEdit', {title: '编辑数据', animateTarget: this});
                     view.loadView();
                     //为了保证数据完整性，拿到这条数据的ID后，需要从后台获取当前这条数据，然后再修改
                     //对于后台而言，最好对数据设置@version功能，确保数据一致性。
-                    loadFormDataFromDb(view, 'app/testdata/user.json');
+                    loadFormDataFromDb(view, '/user/get?id=' + id);
                 } else {
                     showFailMesg({
                         msg: '加载信息失败，请确认。'

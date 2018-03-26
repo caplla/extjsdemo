@@ -10,7 +10,7 @@
     "children": [
       {
         "id": "11111",
-        "text": "用户管理",
+        "text": "增删改查",
         "href": null,
         "leaf": true,
         "iconCls": "fa fa-user",
@@ -20,12 +20,22 @@
       },
       {
         "id": "2222",
-        "text": "例子",
+        "text": "tree示例",
         "href": null,
         "leaf": true,
         "iconCls": "fa fa-bars",
         "module_id": "sys.TreeController",
-        "qtip": "一堆乱七八糟的例子",
+        "qtip": "一堆树",
+        "children": []
+      },
+      {
+        "id": "3333",
+        "text": "combo示例",
+        "href": null,
+        "leaf": true,
+        "iconCls": "fa fa-bars",
+        "module_id": "ComboDemoController",
+        "qtip": "下拉框示例",
         "children": []
       }
     ]

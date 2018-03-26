@@ -2,6 +2,7 @@ package com.luter.extjs.service.base;
 
 
 import com.luter.extjs.util.ConditionQuery;
+import com.luter.extjs.util.OrderBy;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -31,4 +32,5 @@ public interface BaseService {
     <T> List<T> loadAll(final Class<T> entityClass);
 
     <T> T findUniqueByProperty(Class<T> entityClass, String propertyName, Object value);
+    <T> List<T> listPageByConditionQueryInOrderWithOffset(Class<T> entityClass, ConditionQuery query, OrderBy orderBy, final int offset, final int pageSize);
 }
