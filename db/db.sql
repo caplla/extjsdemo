@@ -18,163 +18,195 @@ USE `extjs_demo_db`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `t_resource`
+-- Table structure for table `t_s_resource`
 --
 
-DROP TABLE IF EXISTS `t_resource`;
+DROP TABLE IF EXISTS `t_s_resource`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_resource` (
-  `id` bigint(20) NOT NULL,
-  `pid` bigint(20) NOT NULL,
-  `href` varchar(255) DEFAULT NULL,
+CREATE TABLE `t_s_resource` (
+  `id` varchar(128) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `remarks` varchar(255) DEFAULT NULL,
+  `update_at` datetime DEFAULT NULL,
+  `version` int(11) NOT NULL,
   `icon_cls` varchar(255) DEFAULT NULL,
   `module_id` varchar(255) DEFAULT NULL,
-  `qtip` varchar(255) DEFAULT NULL,
-  `resource_type` varchar(255) DEFAULT NULL,
-  `text` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `t_resource`
---
-
-LOCK TABLES `t_resource` WRITE;
-/*!40000 ALTER TABLE `t_resource` DISABLE KEYS */;
-INSERT INTO `t_resource` VALUES (1,0,NULL,'fa-leaf',NULL,'系统管理','menu','系统管理'),(2,0,NULL,'fa-user',NULL,'新闻资讯管理','menu','内容管理'),(11,1,NULL,'fa-users','sys.UserController','系统用户管理','module','用户管理'),(12,1,NULL,'fa-circle','sys.RoleController','角色管理','module','角色管理'),(3,0,NULL,'fa-gears',NULL,'示例','menu','示例'),(31,3,NULL,'fa-bars','sys.TreeController','tree示例','module','tree示例'),(32,3,NULL,'fa-gear','ComboDemoController','combo示例','module','combo示例');
-/*!40000 ALTER TABLE `t_resource` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `t_role`
---
-
-DROP TABLE IF EXISTS `t_role`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_role` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `description` varchar(255) DEFAULT NULL,
-  `is_reserved` bit(1) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
+  `perm` varchar(255) DEFAULT NULL,
+  `pid` varchar(255) DEFAULT NULL,
+  `qtip` varchar(255) DEFAULT NULL,
+  `res_type` varchar(255) DEFAULT NULL,
+  `uri` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_role`
+-- Dumping data for table `t_s_resource`
 --
 
-LOCK TABLES `t_role` WRITE;
-/*!40000 ALTER TABLE `t_role` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_role` ENABLE KEYS */;
+LOCK TABLES `t_s_resource` WRITE;
+/*!40000 ALTER TABLE `t_s_resource` DISABLE KEYS */;
+INSERT INTO `t_s_resource` VALUES ('0e78663a-0b7c-44e2-96c9-4fad562c8491','2018-04-06 13:44:32',NULL,NULL,0,'fa fa-users','sys.UserController','用户管理',NULL,'70a084af-5720-4a7c-98be-d80a6c52b651','管理系统里的用户','module',NULL),('2bb05bb8-36d4-4cf8-9705-9200c30644c7','2018-04-06 13:49:32',NULL,NULL,0,'fa fa-users','sys.ResourceController','权限管理',NULL,'70a084af-5720-4a7c-98be-d80a6c52b651','管理系统里的权限','module',NULL),('70a084af-5720-4a7c-98be-d80a6c52b651','2018-04-06 13:03:15',NULL,NULL,0,'fa-bars',NULL,'系统管理',NULL,'0',NULL,'menu',NULL),('7c50bfba-e844-4497-ad79-4ba17a6f4e7f','2018-04-06 13:43:14',NULL,NULL,0,'fa fa-bars',NULL,'ShowCase',NULL,'0',NULL,'menu',NULL),('909b5966-16d6-4434-bc60-7b22f019fd02','2018-04-06 22:01:22',NULL,NULL,0,'fa fa-tree','showcase.ComboDemoController','下拉菜单示例',NULL,'7c50bfba-e844-4497-ad79-4ba17a6f4e7f','下拉菜单示例包括三级联动','module',NULL),('a1ae176e-9572-4b7e-a3e0-845dd3f801ec','2018-04-06 13:50:46',NULL,NULL,0,'fa fa-tree','showcase.TreeController','Tree使用',NULL,'7c50bfba-e844-4497-ad79-4ba17a6f4e7f','Tree使用','module',NULL),('a490fc67-7a32-43df-ad84-22a1e849af5e','2018-04-06 13:48:48',NULL,NULL,0,'fa fa-users','sys.RoleController','角色管理',NULL,'70a084af-5720-4a7c-98be-d80a6c52b651','管理系统里的角色','module',NULL);
+/*!40000 ALTER TABLE `t_s_resource` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `t_role_resource`
+-- Table structure for table `t_s_role`
 --
 
-DROP TABLE IF EXISTS `t_role_resource`;
+DROP TABLE IF EXISTS `t_s_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_role_resource` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `resource` bigint(20) DEFAULT NULL,
-  `role` bigint(20) DEFAULT NULL,
+CREATE TABLE `t_s_role` (
+  `id` varchar(128) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `remarks` varchar(255) DEFAULT NULL,
+  `update_at` datetime DEFAULT NULL,
+  `version` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `reserved` bit(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_s_role`
+--
+
+LOCK TABLES `t_s_role` WRITE;
+/*!40000 ALTER TABLE `t_s_role` DISABLE KEYS */;
+INSERT INTO `t_s_role` VALUES ('20aaa211-3889-4773-aea3-c48e895dc51a','2018-04-06 13:04:19','系统管理员','2018-04-06 21:48:29',1,'admin',''),('615a338d-d5c8-4ad7-b63b-301c29da82c5','2018-04-06 14:42:47','这是客人','2018-04-06 14:51:13',1,'guest','\0'),('830ab3b8-728d-43c6-9be0-c8883f5b91cf','2018-04-06 14:50:29','这是普通用户','2018-04-06 14:51:20',1,'user','\0');
+/*!40000 ALTER TABLE `t_s_role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_s_role_resource`
+--
+
+DROP TABLE IF EXISTS `t_s_role_resource`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_s_role_resource` (
+  `id` varchar(128) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `remarks` varchar(255) DEFAULT NULL,
+  `update_at` datetime DEFAULT NULL,
+  `version` int(11) NOT NULL,
+  `resource` varchar(128) DEFAULT NULL,
+  `role` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK1orhwrlxprumge5r7ncoj51s3` (`resource`),
-  KEY `FK9jomcantmfnhivmvckgu499to` (`role`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  KEY `FK34x7luerjfkmlq6ftinblvtmj` (`resource`),
+  KEY `FKc2q3von6akb7dx7qcblxc4va5` (`role`),
+  CONSTRAINT `FK34x7luerjfkmlq6ftinblvtmj` FOREIGN KEY (`resource`) REFERENCES `t_s_resource` (`id`),
+  CONSTRAINT `FKc2q3von6akb7dx7qcblxc4va5` FOREIGN KEY (`role`) REFERENCES `t_s_role` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_role_resource`
+-- Dumping data for table `t_s_role_resource`
 --
 
-LOCK TABLES `t_role_resource` WRITE;
-/*!40000 ALTER TABLE `t_role_resource` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_role_resource` ENABLE KEYS */;
+LOCK TABLES `t_s_role_resource` WRITE;
+/*!40000 ALTER TABLE `t_s_role_resource` DISABLE KEYS */;
+INSERT INTO `t_s_role_resource` VALUES ('0822b461-9f50-40b5-97d5-6b356b536db6','2018-04-06 22:01:37',NULL,NULL,0,'a1ae176e-9572-4b7e-a3e0-845dd3f801ec','20aaa211-3889-4773-aea3-c48e895dc51a'),('2e0ecc08-59fd-4ec0-8dea-6ab419740663','2018-04-06 22:01:37',NULL,NULL,0,'0e78663a-0b7c-44e2-96c9-4fad562c8491','20aaa211-3889-4773-aea3-c48e895dc51a'),('4c9af4ef-458a-4d7c-8060-98cab0916b6e','2018-04-06 21:31:32',NULL,NULL,0,'a490fc67-7a32-43df-ad84-22a1e849af5e','615a338d-d5c8-4ad7-b63b-301c29da82c5'),('5566c13a-2038-4fb7-9a76-6975f0360711','2018-04-06 22:01:37',NULL,NULL,0,'a490fc67-7a32-43df-ad84-22a1e849af5e','20aaa211-3889-4773-aea3-c48e895dc51a'),('63835db8-d488-4db3-a5dc-e9d9dba66b16','2018-04-06 21:31:32',NULL,NULL,0,'0e78663a-0b7c-44e2-96c9-4fad562c8491','615a338d-d5c8-4ad7-b63b-301c29da82c5'),('644dcf39-c826-45f2-a0e5-6af47f83ab96','2018-04-06 22:01:37',NULL,NULL,0,'7c50bfba-e844-4497-ad79-4ba17a6f4e7f','20aaa211-3889-4773-aea3-c48e895dc51a'),('ae8d4cde-5bb0-425f-80d5-c613f67d3186','2018-04-06 21:31:32',NULL,NULL,0,'2bb05bb8-36d4-4cf8-9705-9200c30644c7','615a338d-d5c8-4ad7-b63b-301c29da82c5'),('b2d3651b-f7e1-4a60-a5f9-dcff269e0c5b','2018-04-06 21:31:32',NULL,NULL,0,'70a084af-5720-4a7c-98be-d80a6c52b651','615a338d-d5c8-4ad7-b63b-301c29da82c5'),('bc0820b4-7933-403e-848e-1c62dee19aed','2018-04-06 22:01:37',NULL,NULL,0,'2bb05bb8-36d4-4cf8-9705-9200c30644c7','20aaa211-3889-4773-aea3-c48e895dc51a'),('c63f6c71-ca4f-4d71-ac0c-3d541665b124','2018-04-06 22:01:37',NULL,NULL,0,'909b5966-16d6-4434-bc60-7b22f019fd02','20aaa211-3889-4773-aea3-c48e895dc51a'),('d472367c-c735-4581-aa23-bed7dafba69d','2018-04-06 22:01:37',NULL,NULL,0,'70a084af-5720-4a7c-98be-d80a6c52b651','20aaa211-3889-4773-aea3-c48e895dc51a');
+/*!40000 ALTER TABLE `t_s_role_resource` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `t_role_user`
+-- Table structure for table `t_s_role_user`
 --
 
-DROP TABLE IF EXISTS `t_role_user`;
+DROP TABLE IF EXISTS `t_s_role_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_role_user` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `role` bigint(20) DEFAULT NULL,
-  `user` bigint(20) DEFAULT NULL,
+CREATE TABLE `t_s_role_user` (
+  `id` varchar(128) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `remarks` varchar(255) DEFAULT NULL,
+  `update_at` datetime DEFAULT NULL,
+  `version` int(11) NOT NULL,
+  `role` varchar(128) DEFAULT NULL,
+  `user` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK6vrp5y1gj20mqh9xloph1tklr` (`role`),
-  KEY `FKoxi45ei5hspsocromjfalp9jw` (`user`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  KEY `FKhhtbeom0472k3xs9f1h0vsleo` (`role`),
+  KEY `FK1fhunyn6hnatvsdoon4h4by9k` (`user`),
+  CONSTRAINT `FK1fhunyn6hnatvsdoon4h4by9k` FOREIGN KEY (`user`) REFERENCES `t_s_user` (`id`),
+  CONSTRAINT `FKhhtbeom0472k3xs9f1h0vsleo` FOREIGN KEY (`role`) REFERENCES `t_s_role` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_role_user`
+-- Dumping data for table `t_s_role_user`
 --
 
-LOCK TABLES `t_role_user` WRITE;
-/*!40000 ALTER TABLE `t_role_user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_role_user` ENABLE KEYS */;
+LOCK TABLES `t_s_role_user` WRITE;
+/*!40000 ALTER TABLE `t_s_role_user` DISABLE KEYS */;
+INSERT INTO `t_s_role_user` VALUES ('03534a81-58d4-42f2-9f49-b26a40feceba','2018-04-06 13:05:50',NULL,NULL,0,'20aaa211-3889-4773-aea3-c48e895dc51a','481b2b20-0d23-4334-9a9b-a7583fb64549');
+/*!40000 ALTER TABLE `t_s_role_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `t_tree`
+-- Table structure for table `t_s_user`
 --
 
-DROP TABLE IF EXISTS `t_tree`;
+DROP TABLE IF EXISTS `t_s_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_tree` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `t_s_user` (
+  `id` varchar(128) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `gender` varchar(255) DEFAULT NULL,
+  `locked` bit(1) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `salt` varchar(255) DEFAULT NULL,
+  `update_at` datetime DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `version` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_s_user`
+--
+
+LOCK TABLES `t_s_user` WRITE;
+/*!40000 ALTER TABLE `t_s_user` DISABLE KEYS */;
+INSERT INTO `t_s_user` VALUES ('481b2b20-0d23-4334-9a9b-a7583fb64549','2018-04-06 13:00:31',NULL,'\0','bf4df9af06f213df7cc69eedd96f7aa6','3556553547c97a97d9e7a0cd9576463b',NULL,'admin',0);
+/*!40000 ALTER TABLE `t_s_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_showcase_tree`
+--
+
+DROP TABLE IF EXISTS `t_showcase_tree`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_showcase_tree` (
+  `id` varchar(128) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `remarks` varchar(255) DEFAULT NULL,
+  `update_at` datetime DEFAULT NULL,
+  `version` int(11) NOT NULL,
   `iconcls` varchar(255) DEFAULT NULL,
-  `pid` bigint(20) DEFAULT NULL,
+  `pid` varchar(255) DEFAULT NULL,
   `qtip` varchar(255) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `t_tree`
+-- Dumping data for table `t_showcase_tree`
 --
 
-LOCK TABLES `t_tree` WRITE;
-/*!40000 ALTER TABLE `t_tree` DISABLE KEYS */;
-INSERT INTO `t_tree` VALUES (1,'fa-user',0,'这是一级','系统管理'),(2,'fa-circle',0,'这是一级','一个大圈圈'),(3,'fa-bars',1,'二级','用户管理'),(4,'fa-bars',3,'三级','添加用户');
-/*!40000 ALTER TABLE `t_tree` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `t_user`
---
-
-DROP TABLE IF EXISTS `t_user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_user` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `age` int(11) NOT NULL,
-  `gender` varchar(255) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `t_user`
---
-
-LOCK TABLES `t_user` WRITE;
-/*!40000 ALTER TABLE `t_user` DISABLE KEYS */;
-INSERT INTO `t_user` VALUES (1,25,'1','武松'),(2,30,'1','武大郎'),(3,18,'2','潘金莲'),(4,19,'2','阎婆惜'),(5,100,'1','宋江');
-/*!40000 ALTER TABLE `t_user` ENABLE KEYS */;
+LOCK TABLES `t_showcase_tree` WRITE;
+/*!40000 ALTER TABLE `t_showcase_tree` DISABLE KEYS */;
+INSERT INTO `t_showcase_tree` VALUES ('40f5770b-d663-46fb-a086-223afc10e681','2018-04-06 21:58:43',NULL,NULL,0,'fa-bars','dd85a4d4-7641-4aeb-9074-f29d1408d7f4',NULL,'爷爷'),('5f425fd2-47d3-4411-a64e-8f69a7528911','2018-04-06 21:58:09',NULL,NULL,0,'fa-bars','0',NULL,'祖母'),('a700f499-fefe-438c-8974-0d5bbbd40e0c','2018-04-06 21:59:10',NULL,NULL,0,'fa-bars','40f5770b-d663-46fb-a086-223afc10e681',NULL,'爸爸'),('dd85a4d4-7641-4aeb-9074-f29d1408d7f4','2018-04-06 21:57:40',NULL,NULL,0,'fa-bars','0',NULL,'祖父');
+/*!40000 ALTER TABLE `t_showcase_tree` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -194,4 +226,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-03-26 15:21:33
+-- Dump completed on 2018-04-08 16:09:21
