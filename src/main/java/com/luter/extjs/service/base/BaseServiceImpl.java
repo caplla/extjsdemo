@@ -1,15 +1,18 @@
 package com.luter.extjs.service.base;
 
 
-import com.luter.extjs.util.ConditionQuery;
-import com.luter.extjs.util.OrderBy;
+import com.luter.extjs.util.dao.ConditionQuery;
+import com.luter.extjs.util.dao.OrderBy;
+import com.luter.extjs.util.ext.ExtDataModel;
+import com.luter.extjs.util.ext.ExtPager;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -34,7 +37,6 @@ public class BaseServiceImpl implements BaseService {
     private Session getSession() {
         return em.unwrap(Session.class);
     }
-
 
     @Override
     public <T> T get(Class<T> entityName, Serializable id) {
@@ -76,7 +78,7 @@ public class BaseServiceImpl implements BaseService {
     @Override
     public <T> void deleteAllEntitie(Collection<T> entities) {
         for (Object entity : entities) {
-            getSession().delete(entity);
+            getSession().delete(getSession().merge(entity));
         }
         getSession().flush();
     }
@@ -103,7 +105,11 @@ public class BaseServiceImpl implements BaseService {
         criteria.setProjection(null);
         return recordCount;
     }
-
+    @Override
+    public <T> List<T> findListbySql(String query, Class<T> entity) {
+        Query querys = getSession().createSQLQuery(query).addEntity(entity);
+        return querys.list();
+    }
     @Override
     public <T> List<T> findByProperty(Class<T> entityClass, String propertyName, Object value) {
         Assert.hasText(propertyName, "propertyName不能为空");
@@ -133,6 +139,19 @@ public class BaseServiceImpl implements BaseService {
         return criteria.list();
     }
 
+    @Override
+    public <T> ExtDataModel<T> listPageByConditionQuery(Class entityClass, ConditionQuery query, ExtPager pager) {
+        int start = pager.getStart();
+        int size = pager.getLimit();
+        start = start < 0 ? 0 : start;
+        size = (size < 1 || size > DEFAULT_PAGE_SIZE) ? DEFAULT_PAGE_SIZE : size;
+        OrderBy orderBy = pager.getOrder();
+        List<T> data = listPageByConditionQueryInOrderWithOffset(entityClass, query, orderBy, start, size);
+        int total = getCountByConditionQuery(entityClass, query);
+        ExtDataModel<T> dataModel = new ExtDataModel<>().ok(total, data);
+        return dataModel;
+    }
+
     private <T> Criteria createCriteria(Class<T> entityClass, Criterion... criterions) {
         Criteria criteria = getSession().createCriteria(entityClass);
         for (Criterion c : criterions) {
@@ -140,6 +159,7 @@ public class BaseServiceImpl implements BaseService {
         }
         return criteria;
     }
+
     private void setParameters(Query query, Object[] paramlist) {
         if (null != paramlist) {
             for (int i = 0; i < paramlist.length; i++) {

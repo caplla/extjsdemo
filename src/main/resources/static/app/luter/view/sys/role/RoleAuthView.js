@@ -8,6 +8,7 @@ Ext.define('luter.view.sys.role.RoleAuthView', {
     iconCls: baseConfig.appicon.role,
     requires: ['luter.model.UserModel'],
     title: '用户角色与授权',
+    current_role: null,
     initComponent: function () {
         var me = this;
         /**
@@ -50,59 +51,16 @@ Ext.define('luter.view.sys.role.RoleAuthView', {
 
             }
         };
-        var roleUserStore = Ext.create('Ext.data.Store', {
-            storeId: 'roleUserStore',
-            autoLoad: false,
-            model: 'luter.model.UserModel',
-            pageSize: 15,
-            remoteSort: true,
-            sortOnLoad: true,
-            proxy: {
-                type: 'ajax',
-                actionMethods: {
-                    create: 'POST',
-                    read: 'GET',
-                    update: 'POST',
-                    destroy: 'POST'
-                },
-                api: {
-                    read: '/user/list'
-                },
-                reader: {
-                    type: 'json',
-                    root: 'root',
-                    successProperty: 'success',
-                    totalProperty: 'total'
-                },
-                listeners: {
-                    exception: function (proxy, response, operation, eOpts) {
-                        DealAjaxResponse(response);
-                    }
-                }
-            },
-            sortOnLoad: true,
-            sorters: {
-                property: 'id',
-                direction: 'DESC'
-            }
-        });
         var rolegrid = Ext.create('Ext.grid.Panel', {
-            store: Ext.data.StoreManager.lookup('roleStore'),
+            store: Ext.data.StoreManager.lookup('RoleStore'),
             itemId: 'roleGrid',
             flex: 1,
             listeners: {
                 'itemdblclick': function (table, record, html, row, event, opt) {
                     if (record) {
-                        if (!record.get('is_reserved')) {
+                        if (!record.get('reserved')) {
                             //克隆一个记录，用作form load的属性匹配和修改
                             var therecord = record.clone();
-                            ////把object转换成id
-                            //if (therecord && record.get('department')) {
-                            //    therecord.set('department', record.get('department').id);
-                            //}
-                            //if (therecord && record.get('gender')) {
-                            //    therecord.set('gender', record.get('gender').id);
-                            //}
                             var view = Ext.create('luter.view.sys.role.RoleEdit');
                             view.show();
                             //延迟500毫秒，load数据到form
@@ -128,25 +86,21 @@ Ext.define('luter.view.sys.role.RoleAuthView', {
             selModel: Ext.create('Ext.selection.RowModel', {
                 listeners: {
                     select: function (el, record, index, eOpts) {
-                        roleuserGrid.setTitle('<i class="fa fa-lg fa-user"></i> --[<font color=red> ' + record.get("role_name") + ' </font>]的用户：');
-                        Ext.data.StoreManager.lookup('roleUserStore').getProxy().setExtraParam('role', record.get("id"));
-                        //Ext.data.StoreManager.lookup('roleUserStore').load({url: 'role/listRoleUsers'});
-                        Ext.data.StoreManager.lookup('roleUserStore').load();
                     }
                 }
             }),
             columns: [{
                 header: baseConfig.model.role.id,
                 dataIndex: 'id',
-                hidden: false,
+                hidden: true,
                 flex: 1
             }, {
-                header: baseConfig.model.role.role_name,
-                dataIndex: 'role_name',
+                header: baseConfig.model.role.name,
+                dataIndex: 'name',
                 flex: 1
             }, {
-                header: baseConfig.model.role.is_reserved,
-                dataIndex: 'is_reserved',
+                header: baseConfig.model.role.reserved,
+                dataIndex: 'reserved',
                 xtype: 'booleancolumn',
                 trueText: '是的',
                 falseText: '不是',
@@ -162,19 +116,18 @@ Ext.define('luter.view.sys.role.RoleAuthView', {
                     tooltip: "设置该角色可以操作的系统功能",
                     handler: function (grid, rindex, cindex) {
                         var record = grid.getStore().getAt(rindex);
-                        treeB.setTitle('<i class="fa fa-lg fa-users"></i> [<font color=red> ' + record.get("role_name") + ' </font>]的系统操作权限：');
-                        Ext.getStore('storeB').getProxy().setExtraParam('role_id', record.get("id"));
+                        me.current_role = record.get("id");
+                        treeB.setTitle('<i class="fa fa-lg fa-users"></i> 角色: [<font color=red> ' + record.get("name") + ' </font>]的权限：');
+                        Ext.getStore('storeB').getProxy().setExtraParam('role', record.get("id"));
                         Ext.getStore('storeB').load({
                             callback: function () {
                                 treeB.expandAll();
                             }
                         });
-
-                        rolegrid.selModel.doSelect(rolegrid.store.data.items[rindex]);
-
                     },
                     isDisabled: function (view, rowIndex, colIndex, item, record) {
-                        return record.get('is_reserved');
+                        console.log(record);
+                        return record.get('reserved');
                     }
                 }]
             }],
@@ -195,47 +148,12 @@ Ext.define('luter.view.sys.role.RoleAuthView', {
                 }
             }], plugins: [{
                 ptype: 'rowexpander',
-                rowBodyTpl: ['<p>{role_desc}</p>']
+                rowBodyTpl: ['<p>{remarks}</p>']
             }]
-        });
-        var roleuserGrid = Ext.create('Ext.grid.Panel', {
-            store: Ext.getStore('roleUserStore'),
-            flex: 1,
-            itemId: 'roleUserGrid',
-            selModel: Ext.create('Ext.selection.RowModel', {
-                listeners: {
-                    selectionchange: function (sm, selections) {
-
-                    }
-                }
-            }),
-            columns: [{
-                header: 'id',
-                dataIndex: baseConfig.model.user.id,
-                hidden: true,
-
-                flex: 1
-            }, {
-                header: baseConfig.model.user.username,
-                dataIndex: 'username',
-
-                flex: 1
-            }, {
-                header: baseConfig.model.user.gender,
-                dataIndex: 'gender',
-                flex: 1
-            }],
-            bbar: Ext.create('Ext.PagingToolbar', {
-                store: Ext.getStore('roleUserStore'),
-                displayInfo: true,
-                displayMsg: '当前数据 {0} - {1} 总数： {2}',
-                emptyMsg: "没数据显示",
-                plugins: [Ext.create('luter.ux.grid.PagingToolbarResizer')]
-            })
         });
 
         var storeB = Ext.create('Ext.data.TreeStore', {
-            fields: ['id', 'text', 'leaf', 'tips', 'href', 'checked'],
+            fields: ['id', 'text', 'leaf', 'tips', 'expanded', 'href', 'checked'],
             autoLoad: false,
             storeId: 'storeB',
             proxy: {
@@ -247,7 +165,7 @@ Ext.define('luter.view.sys.role.RoleAuthView', {
                     successProperty: 'success'
                 },
                 actionMethods: {
-                    read: 'POST'
+                    read: 'GET'
                 }
 
             }, root: {
@@ -301,14 +219,6 @@ Ext.define('luter.view.sys.role.RoleAuthView', {
             store: storeB,
             hideHeaders: true,
             columns: [
-                //    {
-                //    flex: 1,
-                //    dataIndex: 'checked',
-                //    xtype: 'booleancolumn',
-                //    trueText: apprender.trueText,
-                //    falseText: apprender.falseText
-                //},
-
                 {
                     text: '',
                     flex: 1,
@@ -342,15 +252,13 @@ Ext.define('luter.view.sys.role.RoleAuthView', {
                         var checkednodes = treeB.getChecked();
                         if (checkednodes.length <= 0) {
                             showFailMesg({
-                                msg: '您还没有为此角色选择系统权限，请选择后进行授权！'
+                                message: '您还没有为此角色选择系统权限，请选择后进行授权！'
                             });
-
                         } else {
                             var checkids = new Array();
                             for (var i = 0; i < checkednodes.length; i++) {
                                 if (checkednodes[i].data.id == '0') {
                                     //没有根节点
-
                                 } else {
                                     checkids.push(checkednodes[i].data.id);
                                     if (checkednodes[i].data.leaf) {
@@ -364,10 +272,9 @@ Ext.define('luter.view.sys.role.RoleAuthView', {
                             }
                             console.log(checkids.length);
                             if (1 == 1) {
-                                var role_id = rolegrid.getSelectionModel().getSelection()[0].data.id;
-                                if (role_id) {
+                                if (me.current_role) {
                                     showConfirmMesg({
-                                        msg: '为角色授权，确认?',
+                                        message: '为角色授权，确认?',
                                         fn: function (e) {
                                             if (e == 'yes') {
                                                 Ext.Ajax.request({
@@ -375,7 +282,7 @@ Ext.define('luter.view.sys.role.RoleAuthView', {
                                                     method: 'POST',
                                                     params: {
                                                         ids: Ext.encode(unique(checkids)),
-                                                        role_id: role_id
+                                                        role: me.current_role
                                                     },
                                                     success: function (response, options) {
                                                         DealAjaxResponse(response);
@@ -393,7 +300,7 @@ Ext.define('luter.view.sys.role.RoleAuthView', {
 
                                 } else {
                                     showFailMesg({
-                                        msg: '请在角色列表中选中需要授权的角色记录，然后进行操作。'
+                                        message: '请在角色列表中选中需要授权的角色记录，然后进行操作。'
                                     })
                                 }
 
@@ -412,7 +319,7 @@ Ext.define('luter.view.sys.role.RoleAuthView', {
                 pack: 'middle',
                 align: 'stretch'
             },
-            items: [rolegrid, roleuserGrid]
+            items: [rolegrid]
         });
         Ext.applyIf(me, {
             items: [roleUserPanel, treeB]

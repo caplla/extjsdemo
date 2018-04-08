@@ -3,7 +3,7 @@ Ext.define('luter.store.MyTreeStore', {
     autoLoad: true,
     proxy: {
         type: 'ajax',
-        url: '/tree/async',
+        url: '/showcase/tree/async',
         reader: {
             type: 'json',
             root: 'children',

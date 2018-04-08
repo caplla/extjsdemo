@@ -8,15 +8,8 @@ Ext.define('luter.view.sys.role.RoleAdd', {
     constrain: true,
     modal: true,
     layout: "fit",
-    iconCls: appicon.add,
-    viewModel: {
-        data: {
-            title: ''
-        }
-    },
-    bind: {
-        title: '新增角色:' + '{title}'
-    },
+    minHeight:300,
+    iconCls: baseConfig.appicon.add,
     initComponent: function () {
         var me = this;
         Ext.applyIf(me, {
@@ -43,26 +36,16 @@ Ext.define('luter.view.sys.role.RoleAdd', {
                         layout: "form",
                         items: [{
                             xtype: "textfield",
-                            fieldLabel: appmodel.role.id,
-                            name: 'id',
-                            vtype: 'lowerChar',
-                            maxLength: 40,
-                            maxLengthText: '请输入{0}个字以内',
-                            allowBlank: false,
-                            flex: 1
-                        }, {
-                            xtype: "textfield",
-                            fieldLabel: appmodel.role.role_name,
-                            name: 'role_name',
+                            fieldLabel: baseConfig.model.role.name,
+                            name: 'name',
                             vtype: 'charAndCh',
                             maxLength: 30,
                             maxLengthText: '请输入{0}个字以内',
                             allowBlank: false,
-                            bind: '{title}',
                             flex: 1
                         }, {
                             xtype: 'textarea',
-                            fieldLabel: appmodel.role.role_desc,
+                            fieldLabel: baseConfig.model.role.remarks,
                             name: 'role_desc',
                             allowBlank: true,
                             flex: 1
@@ -75,7 +58,7 @@ Ext.define('luter.view.sys.role.RoleAdd', {
         });
         this.buttons = [{
             text: '新增',
-            iconCls: appicon.add,
+            iconCls: baseConfig.appicon.add,
             tooltip: '保存',
             handler: function () {
                 var form = this.down('form');
@@ -101,7 +84,7 @@ Ext.define('luter.view.sys.role.RoleAdd', {
             scope: this
         }, '-', {
             text: '放弃',
-            iconCls: appicon.undo,
+            iconCls: baseConfig.appicon.undo,
             tooltip: '放弃',
             handler: function () {
                 me.close();

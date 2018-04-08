@@ -14,7 +14,7 @@ Ext.define('luter.store.UserStore', {
             destroy: 'POST'
         },
         api: {
-            read: '/user/list'
+            read: '/user/list?token=aaaa'
         },
         reader: {
             type: 'json',

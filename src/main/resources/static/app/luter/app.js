@@ -66,7 +66,7 @@ Ext.application({
         var tabpanel = Ext.getCmp('systabpanel');
         var tabcount = tabpanel.items.getCount();
         var maxTabCount = 5;
-        if (tabcount && tabcount > 5) {
+        if (tabcount && tabcount > maxTabCount) {
             showFailMesg({
                 title: '为了更好的使用，最多允许打开5个页面',
                 msg: '您打开的页面过多，请关掉一些!'

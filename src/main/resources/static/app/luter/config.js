@@ -76,8 +76,8 @@ var icon_prefix = " fa blue-color ", baseConfig = {
         role: {
             id: "ID",
             name: "角色名称",
-            is_reserved: "系统角色?",
-            description: "备注"
+            reserved: "系统角色?",
+            remarks: "备注"
         },
         resource: {
             id: 'ID',

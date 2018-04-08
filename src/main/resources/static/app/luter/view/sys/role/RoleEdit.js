@@ -8,16 +8,8 @@ Ext.define('luter.view.sys.role.RoleEdit', {
     constrain: true,
     modal: true,
     layout: "fit",
-    iconCls: appicon.update,
-
-    viewModel: {
-        data: {
-            title: ''
-        }
-    },
-    bind: {
-        title: '修改角色:' + '{title}'
-    },
+    iconCls: baseConfig.appicon.update,
+    minHeight:300,
     initComponent: function () {
         var me = this;
         Ext.applyIf(me, {
@@ -44,25 +36,24 @@ Ext.define('luter.view.sys.role.RoleEdit', {
                         items: [
                             {
                                 xtype: 'hidden',
-                                fieldLabel: appmodel.role.id,
+                                fieldLabel: baseConfig.model.role.id,
                                 name: 'id',
                                 allowBlank: true,
                                 flex: 1
                             },
                             {
                                 xtype: "textfield",
-                                fieldLabel: appmodel.role.role_name,
-                                name: 'role_name',
+                                fieldLabel: baseConfig.model.role.name,
+                                name: 'name',
                                 vtype: 'charAndCh',
                                 maxLength: 30,
                                 maxLengthText: '请输入{0}个字以内',
                                 allowBlank: false,
-                                bind: '{title}',
                                 flex: 1
                             }, {
                                 xtype: 'textarea',
-                                fieldLabel: appmodel.role.role_desc,
-                                name: 'role_desc',
+                                fieldLabel: baseConfig.model.role.remarks,
+                                name: 'remarks',
                                 allowBlank: true,
                                 flex: 1
                             }]
@@ -74,7 +65,7 @@ Ext.define('luter.view.sys.role.RoleEdit', {
         });
         this.buttons = [{
             text: '更新',
-            iconCls: appicon.update,
+            iconCls: baseConfig.appicon.update,
             tooltip: '更新',
             handler: function () {
                 var form = this.down('form');
@@ -100,7 +91,7 @@ Ext.define('luter.view.sys.role.RoleEdit', {
             scope: this
         }, '-', {
             text: '放弃',
-            iconCls: appicon.undo,
+            iconCls: baseConfig.appicon.undo,
             tooltip: '放弃',
             handler: function () {
                 this.close();

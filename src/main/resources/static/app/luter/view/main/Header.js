@@ -23,6 +23,51 @@ Ext.define('luter.view.main.Header', {
                 fontWeight: 900
             },
             text: 'Extjs6.2.0DEMO'
+        },  {
+            xtype: 'container',
+
+            layout: {
+                type: 'vbox',
+            },
+            items: [{
+                xtype: 'image',
+                src: '/app/resource/images/power.png',
+                width: 35,
+                height: 35,
+                listeners: {
+                    'click': {
+                        element: 'el',
+                        fn: function () {
+                            showConfirmMesg({
+                                message: '确认注销并退出系统？',
+                                fn: function (btn) {
+                                    if (btn === 'yes') {
+                                        Ext.Ajax.request({
+                                            url: 'logout',
+                                            method: 'POST',
+                                            success: function (response, options) {
+                                                window.location.href = "login";
+                                            },
+                                            failure: function (response, options) {
+                                                DealAjaxResponse(response);
+                                            }
+                                        });
+
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            })
+                        }
+                    },
+                    afterrender: function (c) {
+                        Ext.create('Ext.tip.ToolTip', {
+                            target: c.getEl(),
+                            html: '点击退出系统.'
+                        });
+                    }
+                }
+            }]
         },{
             xtype: 'image',
             cls: 'circle-pic',

@@ -7,7 +7,7 @@ Ext.define('luter.store.SyncTreeStore', {
     autoLoad: true,
     proxy: {
         type: 'ajax',
-        url: '/tree/sync',
+        url: '/showcase/tree/sync',
         reader: {
             type: 'json',
             root: 'children',
