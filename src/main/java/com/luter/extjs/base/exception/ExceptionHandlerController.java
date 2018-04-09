@@ -32,6 +32,7 @@ public class ExceptionHandlerController {
         String emsg = e.getLocalizedMessage() + "." + (null != e.getCause() ? e.getCause().getMessage() : "");
         log.error("发生内部错误，错误代码:{},错误内容:{}", 500, emsg);
         return new ExtDataModel().fail(e.getCode(), e.getMessage(), emsg);
+
     }
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)

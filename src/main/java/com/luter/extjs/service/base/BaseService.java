@@ -9,6 +9,7 @@ import com.luter.extjs.util.ext.ExtPager;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public interface BaseService {
     <T> T get(Class<T> entityName, Serializable id);
@@ -38,4 +39,8 @@ public interface BaseService {
     <T> ExtDataModel<T> listPageByConditionQuery(Class entityClass, ConditionQuery query, ExtPager pager);
 
     <T> List<T> listPageByConditionQueryInOrderWithOffset(Class<T> entityClass, ConditionQuery query, OrderBy orderBy, final int offset, final int pageSize);
+    Boolean exist(String sql);
+    <T>  Boolean exist(Class<T> entityClass,String propertyName, Object value);
+    public List<Map<String, Object>> listBySQL(String sql);
+
 }

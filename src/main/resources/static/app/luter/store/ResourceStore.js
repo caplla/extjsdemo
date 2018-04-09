@@ -35,7 +35,7 @@ Ext.define('luter.store.ResourceStore', {
             //加载之前
             if (!node.isRoot()) {
                 node.set('iconCls', node.get('iconCls') + '  red-color');
-                node.set('qtip', node.get('memo'));
+                node.set('qtip', node.get('remarks'));
                 node.set('leaf', node.get('type') == 'perm');
             }
 

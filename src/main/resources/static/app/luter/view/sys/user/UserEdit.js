@@ -9,7 +9,7 @@ Ext.define('luter.view.sys.user.UserEdit', {
     layout: "fit",//自适应布局
     width: 700,
     autoHeight: true,//自适应高度
-    minHeight:300,
+    minHeight: 300,
     initComponent: function () {
         var me = this;
         //加入一个表单，表单内元素通过loadView方法添加
@@ -79,6 +79,7 @@ Ext.define('luter.view.sys.user.UserEdit', {
                 maxLengthText: '请输入{0}个字以内',
                 emptyText: '登录用的用户名',
                 allowBlank: false,
+                readOnly:true,
                 flex: 1
             }, {
                 xtype: "gendercombo",
@@ -87,17 +88,37 @@ Ext.define('luter.view.sys.user.UserEdit', {
                 emptyText: '请选择',
                 allowBlank: false,
                 flex: 1
+            },{
+                xtype: 'checkboxfield',
+                name: 'locked',
+                boxLabel: '锁定?'
             }, {
-                xtype: "numberfield",
-                fieldLabel: baseConfig.model.user.age,
-                name: 'age',
-                emptyText: '请输入年纪',
-                allowBlank: false,
-                minValue: 1,
-                minText: '你出生没?',
-                maxValue: 200,
-                maxText: '这么大年纪是王八！！！',
-                flex: 1
+                xtype: 'tagfield',
+                name: 'roles',
+                fieldLabel: '用户角色',
+                store: Ext.create('Ext.data.Store', {
+                    proxy: {
+                        type: 'ajax',
+                        actionMethods: {
+                            read: 'GET'
+                        },
+                        api: {
+                            read: '/role/list/all'
+                        },
+                        reader: {
+                            type: 'json',
+                            root: 'data',
+                            successProperty: 'success',
+                            totalProperty: 'total'
+                        }
+                    },
+                    autoLoad: true
+                }),
+                displayField: 'name',
+                valueField: 'id',
+                filterPickList: true,
+                queryMode: 'local',
+                publishes: 'value'
             }]
 
         }]);

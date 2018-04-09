@@ -6,9 +6,16 @@ Ext.define('luter.view.sys.user.UserList', {
     itemId: 'userGrid',
     columnLines: true,
     viewConfig: {
-        emptyText: '<b>暂无数据</b>'
+        emptyText: '<b>暂无数据</b>',
+        autoFill: true,
+        getRowClass: function(record, rowIndex, rowParams, store) {
+            return record.get('locked') ? 'no' : '';
+
+        }
     },
     initComponent: function () {
+        var genderCombo=Ext.create('luter.combo.GenderCombo');
+        var yesnoCombo=Ext.create('luter.combo.YesNoCombo');
         var me = this;
         me.columns = [{
             xtype: 'rownumberer',
@@ -68,7 +75,7 @@ Ext.define('luter.view.sys.user.UserList', {
         }, {
             header: baseConfig.model.user.id,
             dataIndex: 'id',
-            hidden: false,
+            hidden: true,
             flex: 1
         },
 
@@ -78,13 +85,15 @@ Ext.define('luter.view.sys.user.UserList', {
                 flex: 1
             },
             {
-                header: baseConfig.model.user.age,
-                dataIndex: 'age',
+                header: baseConfig.model.user.gender,
+                dataIndex: 'gender',
+                renderer:Ext.util.Format.comboRenderer(genderCombo),
                 flex: 1
             },
             {
-                header: baseConfig.model.user.gender,
-                dataIndex: 'gender',
+                header: baseConfig.model.user.locked,
+                dataIndex: 'locked',
+                renderer:Ext.util.Format.comboRenderer(yesnoCombo),
                 flex: 1
             }
         ]
@@ -125,7 +134,7 @@ Ext.define('luter.view.sys.user.UserList', {
                     loadFormDataFromDb(view, '/user/get?id=' + id);
                 } else {
                     showFailMesg({
-                        msg: '加载信息失败，请确认。'
+                        message: '加载信息失败，请确认。'
                     })
                 }
 

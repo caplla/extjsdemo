@@ -7,6 +7,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,11 @@ public class IndexController extends BaseEntity {
     }
 
     @GetMapping("/login")
-    public String toLogin(HttpServletRequest request) {
+    public String toLogin(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.isAuthenticated()) {
+            return "redirect:index";
+        }
         return "login";
     }
 
@@ -46,9 +51,9 @@ public class IndexController extends BaseEntity {
         subject.login(token);
         Subject currentUser = SecurityUtils.getSubject();
         if (currentUser.isAuthenticated()) {
-            return new ExtDataModel<>().ok("ok");
+            return  new ExtDataModel<>().ok("成功");
         }
-        throw  new UnauthorizedException("请登录");
+        throw new UnauthorizedException("请登录啊");
     }
 
     @PostMapping("/logout")

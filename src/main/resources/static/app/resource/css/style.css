@@ -124,3 +124,9 @@
     border: none
 }
 
+/*extjs hacker*/
+.no .x-grid-cell-inner {
+    font-weight: normal;
+    text-decoration:line-through;
+    background-color: red;
+}

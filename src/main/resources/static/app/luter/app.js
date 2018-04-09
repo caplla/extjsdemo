@@ -50,7 +50,7 @@ Ext.application({
                 var module = luterapp.getController(config.moduleId);
             } catch (error) {
                 showFailMesg({
-                    msg: ':<> O!   No:load module fail,the module object is null.' +
+                    message: ':<> O!   No:load module fail,the module object is null.' +
                     '<br> maybe :the module is Not available now.' +
                     '</br>Error: ' + error
                 });
@@ -69,7 +69,7 @@ Ext.application({
         if (tabcount && tabcount > maxTabCount) {
             showFailMesg({
                 title: '为了更好的使用，最多允许打开5个页面',
-                msg: '您打开的页面过多，请关掉一些!'
+                message: '您打开的页面过多，请关掉一些!'
             });
             return false;
         }

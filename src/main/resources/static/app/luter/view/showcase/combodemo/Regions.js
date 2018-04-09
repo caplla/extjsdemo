@@ -65,6 +65,7 @@ Ext.define('luter.view.showcase.combodemo.Regions', {
             bind: {
                 visible: '{city.value}',
                 store: "{getCounty}"
+
             }
         }]
         me.callParent(arguments);

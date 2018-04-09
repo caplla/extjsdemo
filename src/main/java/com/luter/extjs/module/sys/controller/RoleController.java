@@ -32,6 +32,11 @@ public class RoleController {
         return new ExtDataModel<>().ok(count, objs);
     }
 
+    @GetMapping("/list/all")
+    public Object listAll(HttpServletRequest request, ExtPager pager) {
+        return new ExtDataModel<>().ok(1000, ss.loadAll(TSRole.class));
+    }
+
     @PostMapping("/get")
     public Object get(HttpServletRequest request, TSRole obj) {
         TSRole data = ss.get(TSRole.class, obj.getId());

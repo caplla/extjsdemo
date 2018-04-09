@@ -7,12 +7,12 @@ Ext.define('luter.ux.EchartsPanel', {
         var me = this;
         if (!me.height) {
             showFailMesg({
-                msg: '请正确配置图表参数:height'
+                message: '请正确配置图表参数:height'
             })
         }
         if (!me.option) {
             showFailMesg({
-                msg: '请正确配置图表参数:option'
+                message: '请正确配置图表参数:option'
             })
         }
         me.on("boxready", function () {

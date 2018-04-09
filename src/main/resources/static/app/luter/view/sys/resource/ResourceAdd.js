@@ -55,7 +55,7 @@ Ext.define('luter.view.sys.resource.ResourceAdd', {
                     });
                 } else {
                     showFailMesg({
-                        msg: '请检查输入是否完整和正确！'
+                        message: '请检查输入是否完整和正确！'
                     });
                 }
             },
@@ -100,8 +100,8 @@ Ext.define('luter.view.sys.resource.ResourceAdd', {
                     flex: 1
                 }, {
                     xtype: "restypecombo",
-                    fieldLabel: baseConfig.model.resource.resource_type,
-                    name: 'resource_type',
+                    fieldLabel: baseConfig.model.resource.res_type,
+                    name: 'res_type',
                     value: config.ptype,
 
                     allowBlank: false,
@@ -109,8 +109,8 @@ Ext.define('luter.view.sys.resource.ResourceAdd', {
                     flex: 1
                 }, {
                     xtype: "textfield",
-                    fieldLabel: baseConfig.model.resource.text,
-                    name: 'text',
+                    fieldLabel: baseConfig.model.resource.name,
+                    name: 'name',
                     bind: '{title}',
                     allowBlank: false,
                     flex: 1
@@ -122,15 +122,21 @@ Ext.define('luter.view.sys.resource.ResourceAdd', {
                     flex: 1
                 }, {
                     xtype: "textfield",
-                    fieldLabel: baseConfig.model.resource.href,
-                    name: 'href',
+                    fieldLabel: baseConfig.model.resource.uri,
+                    name: 'uri',
                     allowBlank: true,
                     flex: 1
                 }, {
                     xtype: "textfield",
-                    fieldLabel: baseConfig.model.resource.qtip,
+                    fieldLabel: baseConfig.model.resource.perm,
                     name: 'perm',
                     allowBlank: true,
+                    flex: 1
+                },{
+                    xtype: "textfield",
+                    fieldLabel: baseConfig.model.resource.qtip,
+                    name: 'qtip',
+                    allowBlank: false,
                     flex: 1
                 }, {
                     xtype: "textfield",

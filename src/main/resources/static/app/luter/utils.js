@@ -4,7 +4,7 @@
 function showSucMesg(config) {
     Ext.Msg.show({
         title: '成功',
-        msg: config.message || '',
+        msg: config.message || config.msg || 'error happened!!',
         width: 400,
         buttons: Ext.Msg.OK,
         icon: Ext.MessageBox.INFO,
@@ -18,7 +18,7 @@ function showSucMesg(config) {
 function showFailMesg(config) {
     Ext.Msg.show({
         title: config.title || '失败',
-        msg: config.message || '',
+        msg: config.message || config.msg || 'error happened!!',
         width: 450,
         buttons: Ext.Msg.OK,
         icon: Ext.MessageBox.ERROR,
@@ -182,6 +182,26 @@ function unique(arr) {
     return result;
 }
 
+Ext.util.Format.comboRenderer = function (combo) {
+    return function (value) {
+        var record = combo.findRecordByValue(value);
+        return record
+            ? record.get(combo.displayField)
+            : value;
+    };
+};
+/**
+ *全局覆盖禁止textfied在不为空的情况下全部输入空格
+ */
+Ext.override(Ext.form.field.Text, {
+    validator: function (text) {
+        if (this.allowBlank == false && Ext.util.Format.trim(text).length == 0) {
+            return this.emptyText || '不能为空，请输入';
+        } else {
+            return true;
+        }
+    }
+});
 /**
  * vtype定义
  */
@@ -264,4 +284,30 @@ Ext.apply(Ext.form.VTypes, {
         return /^(http|https|ftp):\/\/(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+)(:(\d+))?\/?/.test(v);
     },
     urlText: 'URL格式不正确'
+});
+
+Ext.override(Ext.form.field.Base, {
+    getSubmitData: function () {
+        var me = this,
+            data = null,
+            val;
+        if (me.submitValue && !me.isFileUpload()) {
+            if (!me.disabled && me.submitValue && !me.isFileUpload()) {
+                val = me.getSubmitValue();
+                if (val !== null) {
+                    data = {};
+                    data[me.getName()] = val;
+                }
+            }
+        }
+        //让没选择的checkbox也提交了
+        if (me.xtype == "checkboxfield") {
+            data = {};
+            data[me.getName()] = me.rawValue;
+        }
+        console.log(data);
+        return data;
+    }
+
+
 });

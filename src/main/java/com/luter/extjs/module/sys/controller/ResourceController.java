@@ -46,8 +46,8 @@ public class ResourceController extends BaseController {
 
     @GetMapping("/tree/async")
     public Object asyncTree(HttpServletRequest request) {
-        Long pid = ServletRequestUtils.getLongParameter(request, "node", -100);
-        if (pid >= -1) {
+        String pid = ServletRequestUtils.getStringParameter(request, "node", "");
+        if (null!=pid) {
             List<TSResource> childs = ss.findByProperty(TSResource.class, "pid", pid);
             return ResponseEntity.ok(childs);
         }

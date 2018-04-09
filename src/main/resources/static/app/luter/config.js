@@ -70,7 +70,8 @@ var icon_prefix = " fa blue-color ", baseConfig = {
         user: {
             id: 'ID',
             username: '用户名',
-            age: '年龄',
+            password: '密码',
+            locked: '锁定?',
             gender: '性别'
         },
         role: {
@@ -81,12 +82,13 @@ var icon_prefix = " fa blue-color ", baseConfig = {
         },
         resource: {
             id: 'ID',
-            text: '节点名称',
-            pid: '父节点',
-            href: '链接',
+            name: '名称',
+            pid: '上级节点',
+            uri: 'URI',
             module_id: '模块id',
+            perm:'权限标识',
             iconCls: 'font图标',
-            resource_type: '类型',
+            res_type: '类型',
             qtip: '提示文本'
 
         }

@@ -119,7 +119,7 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public List<TSResource> getUsersResourceByUserId(String uid) {
-        return null;
+        return resourceRepo.getUserResourcesByUserID(uid);
     }
 
 

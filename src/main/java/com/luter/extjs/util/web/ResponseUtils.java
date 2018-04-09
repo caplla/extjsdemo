@@ -20,6 +20,7 @@ public class ResponseUtils {
         log.info("请求类型判断:XMLHttpRequest:" + headerB + ",result:" + result);
         return result;
     }
+
     /**
      * 判断一个请求是否是json请求
      *
@@ -45,7 +46,7 @@ public class ResponseUtils {
      * @param data     the data
      */
     public static void sendJsonResponse(HttpServletResponse response, Object data) {
-        String jsonStr = JacksonUtils.objectToJson(data);
+        String jsonStr = data instanceof String ? data.toString() : JacksonUtils.objectToJson(data);
         log.debug("send Json to clint:\n" + jsonStr);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");

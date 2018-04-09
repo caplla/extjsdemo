@@ -42,15 +42,15 @@ Ext.define('luter.view.sys.resource.ResourceList', {
                         var record = grid.getStore().getAt(rowIndex);
                         var config = {};
                         config.parent_id = record.get('id');
-                        config.pname = record.get('text');
-                        config.ptype = record.get('resource_type') === 'module' ? 'perm' : '';
-                        config.readO = record.get('resource_type') === 'module' ? true : false;
+                        config.pname = record.get('name');
+                        config.ptype = record.get('res_type') === 'module' ? 'perm' : '';
+                        config.readO = record.get('res_type') === 'module' ? true : false;
                         var view = Ext.create('luter.view.sys.resource.ResourceAdd');
                         view.loadView(config);
                         view.show();
                     },
                     isDisabled: function (view, rowIndex, colIndex, item, record) {
-                        return record.get('type') === 'perm';
+                        return record.get('res_type') === 'perm';
                     }
                 }, '-', {
                     text: "修改",
@@ -76,7 +76,7 @@ Ext.define('luter.view.sys.resource.ResourceList', {
                 text: baseConfig.model.resource.text,
                 flex: 3,
                 sortable: true,
-                dataIndex: 'text',
+                dataIndex: 'name',
                 renderer: function (value, metaData, list, rowIndex, colIndex, store, view) {
                     var count = list.childNodes.length;
                     if (count > 0) {
@@ -98,13 +98,17 @@ Ext.define('luter.view.sys.resource.ResourceList', {
                     flex: 2
                 },
                 {
-                    header: baseConfig.model.resource.resource_type,
-                    dataIndex: 'resource_type',
+                    header: baseConfig.model.resource.res_type,
+                    dataIndex: 'res_type',
                     flex: 1
                 },
                 {
-                    header: baseConfig.model.resource.href,
-                    dataIndex: 'href',
+                    header: baseConfig.model.resource.uri,
+                    dataIndex: 'uri',
+                    flex: 1
+                }, {
+                    header: baseConfig.model.resource.perm,
+                    dataIndex: 'perm',
                     flex: 1
                 },
                 {

@@ -8,11 +8,9 @@ import com.luter.extjs.util.ext.ExtPager;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -20,9 +18,11 @@ import org.springframework.util.Assert;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -105,14 +105,15 @@ public class BaseServiceImpl implements BaseService {
         criteria.setProjection(null);
         return recordCount;
     }
+
     @Override
     public <T> List<T> findListbySql(String query, Class<T> entity) {
         Query querys = getSession().createSQLQuery(query).addEntity(entity);
         return querys.list();
     }
+
     @Override
     public <T> List<T> findByProperty(Class<T> entityClass, String propertyName, Object value) {
-        Assert.hasText(propertyName, "propertyName不能为空");
         return createCriteria(entityClass, Restrictions.eq(propertyName, value)).list();
     }
 
@@ -132,11 +133,31 @@ public class BaseServiceImpl implements BaseService {
         query.build(criteria);
         orderBy.build(criteria);
         offset = offset < DEFAULT_OFFSET ? DEFAULT_OFFSET : offset;
-        pageSize = pageSize < 1 || pageSize > DEFAULT_PAGE_SIZE ? DEFAULT_PAGE_SIZE : pageSize;
-        log.info("pageSize:" + pageSize + ",offset:" + offset);
+        pageSize = pageSize < 0 || pageSize > DEFAULT_PAGE_SIZE ? DEFAULT_PAGE_SIZE : pageSize;
         criteria.setFirstResult(offset);
         criteria.setMaxResults(pageSize);
         return criteria.list();
+    }
+
+    @Override
+    public Boolean exist(String sql) {
+        SQLQuery query = getSession().createSQLQuery(sql);
+        BigInteger count = (BigInteger) query.uniqueResult();
+        return count.intValue() > 0 ? true : false;
+    }
+
+    @Override
+    public <T> Boolean exist(Class<T> entityClass, String propertyName, Object value) {
+        List<T> t = findByProperty(entityClass, propertyName, value);
+        return (null != t && t.size() > 0);
+    }
+
+
+    @Override
+    public List<Map<String, Object>> listBySQL(String sql) {
+        SQLQuery sqlQuery = getSession().createSQLQuery(sql);
+        sqlQuery.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
+        return sqlQuery.list();
     }
 
     @Override

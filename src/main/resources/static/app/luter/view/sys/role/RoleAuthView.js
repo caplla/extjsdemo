@@ -70,14 +70,14 @@ Ext.define('luter.view.sys.role.RoleAuthView', {
                             d.delay(500);
                         } else {
                             return false;
-                            //showFailMesg({
-                            //    msg: '系统角色不允许修改。'
-                            //})
+                            showFailMesg({
+                               message: '系统角色不允许修改。'
+                            })
                         }
 
                     } else {
                         showFailMesg({
-                            msg: '加载信息失败，请确认。'
+                            message: '加载信息失败，请确认。'
                         })
                     }
 
@@ -127,7 +127,8 @@ Ext.define('luter.view.sys.role.RoleAuthView', {
                     },
                     isDisabled: function (view, rowIndex, colIndex, item, record) {
                         console.log(record);
-                        return record.get('reserved');
+                        // return record.get('reserved');
+                        return false;
                     }
                 }]
             }],

@@ -10,7 +10,6 @@ $(document).ready(function () {
                 window.location.href = "/";
             },
             error:function (data) {
-                console.log(data.responseJSON.message)
                 showError(data.responseJSON.message||'出错了')
             }
         });

@@ -9,7 +9,7 @@ Ext.define('luter.view.sys.user.UserAdd', {
     layout: "fit",//自适应布局
     width: 700,
     autoHeight: true,//自适应高度
-    minHeight:300,
+    minHeight: 300,
     viewModel: {
         data: {
             title: ''
@@ -40,7 +40,7 @@ Ext.define('luter.view.sys.user.UserAdd', {
                 var form = this.down('form');
                 if (form.isValid()) {
                     form.submit({
-                        url: '/user/create',
+                        url: '/user/add',
                         method: 'POST',
                         waitTitle: "提示",
                         waitMsg: '正在提交数据，请稍后 ……',
@@ -74,6 +74,8 @@ Ext.define('luter.view.sys.user.UserAdd', {
     //form表单的渲染在这里完成，目的是可以通过创建操作传入参数
     loadView: function (config) {
         var formCmp = this.getComponent(0);
+
+
         formCmp.add([{
             columnWidth: 1,
             layout: "form",
@@ -88,23 +90,48 @@ Ext.define('luter.view.sys.user.UserAdd', {
                 allowBlank: false,
                 flex: 1
             }, {
-                xtype: "gendercombo",
-                fieldLabel: baseConfig.model.user.gender,
-                name: 'gender',
-                emptyText: '请选择',
+                xtype: "textfield",
+                fieldLabel: baseConfig.model.user.password,
+                name: 'password',
+                maxLength: 20,
+                maxLengthText: '请输入{0}个字以内',
+                emptyText: '请输入初始密码',
                 allowBlank: false,
                 flex: 1
             }, {
-                xtype: "numberfield",
-                fieldLabel: baseConfig.model.user.age,
-                name: 'age',
-                emptyText: '请输入年纪',
+                xtype: "gendercombo",
+                fieldLabel: baseConfig.model.user.gender,
+                name: 'gender',
+                emptyText: '请选择性别',
                 allowBlank: false,
-                minValue: 1,
-                minText: '你出生没?',
-                maxValue: 200,
-                maxText: '这么大年纪是王八！！！',
                 flex: 1
+            }, {
+                xtype: 'tagfield',
+                name: 'roles',
+                fieldLabel: '用户角色',
+                store: Ext.create('Ext.data.Store', {
+                    proxy: {
+                        type: 'ajax',
+                        actionMethods: {
+                            read: 'GET'
+                        },
+                        api: {
+                            read: '/role/list/all'
+                        },
+                        reader: {
+                            type: 'json',
+                            root: 'data',
+                            successProperty: 'success',
+                            totalProperty: 'total'
+                        }
+                    },
+                    autoLoad: false
+                }),
+                displayField: 'name',
+                valueField: 'id',
+                filterPickList: true,
+                queryMode: 'remote',
+                publishes: 'value'
             }]
 
         }]);
