@@ -49,12 +49,12 @@ public class ExtjsApplicationTests {
     @Test
     public void addResource() {
         TSResource resource = new TSResource();
-        resource.setName("下拉菜单示例");
+        resource.setName("可编辑表格");
         resource.setIconCls("fa fa-tree");
         resource.setPid("7c50bfba-e844-4497-ad79-4ba17a6f4e7f");
         resource.setRes_type(R.resourceType.module);
-        resource.setModule_id("showcase.ComboDemoController");
-        resource.setQtip("下拉菜单示例包括三级联动");
+        resource.setModule_id("showcase.CatController");
+        resource.setQtip("可编辑表格的修改和提交示例");
         ss.save(resource);
     }
 

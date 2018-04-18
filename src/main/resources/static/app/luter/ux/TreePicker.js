@@ -73,16 +73,17 @@ Ext.define('luter.ux.TreePicker', {
      */
     createPicker: function () {
         var me = this,
-            picker = new Ext.tree.Panel({
+            picker = Ext.create('Ext.tree.Panel', {
                 baseCls: Ext.baseCSSPrefix + 'boundlist',
                 shrinkWrapDock: 2,
+                rootVisible: true,
                 store: me.store,
                 floating: true,
                 displayField: me.displayField,
                 columns: me.columns,
                 minHeight: me.minPickerHeight,
                 maxHeight: me.maxPickerHeight,
-                manageHeight: false,
+                // manageHeight: false,//这东西会引起高度问题
                 shadow: false,
                 listeners: {
                     scope: me,

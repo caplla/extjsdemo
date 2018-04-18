@@ -1,6 +1,6 @@
 Ext.define('luter.store.NavTreeStore', {
     extend: 'Ext.data.TreeStore',
-    fields: ['id', 'text', 'leaf', 'module', 'tips', 'icon'],
+    fields: ['id', 'text', 'leaf', 'module', 'qtip', 'iconCls'],
     autoLoad: true,
     proxy: {
         type: 'ajax',

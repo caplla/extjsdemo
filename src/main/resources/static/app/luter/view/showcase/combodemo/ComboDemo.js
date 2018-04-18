@@ -9,6 +9,7 @@ Ext.define('luter.view.showcase.combodemo.ComboDemo', {
                 id: 1,
                 expanded: true,
                 valueField: "你爹",
+                leaf: false,
                 children: [{
                     id: 11,
                     valueField: "你妹",
@@ -23,6 +24,7 @@ Ext.define('luter.view.showcase.combodemo.ComboDemo', {
                     id: 12,
                     valueField: "你哥",
                     expanded: true,
+                    leaf: false,
                     children: [{
                         id: 121,
                         valueField: "你侄子",
@@ -40,7 +42,6 @@ Ext.define('luter.view.showcase.combodemo.ComboDemo', {
             }
         });
         var xialashu = Ext.create('Ext.form.Panel', {
-            title: "下拉里面一棵树",
             items: [
                 Ext.create('luter.ux.TreePicker', {
                     store: treeStore,
@@ -48,8 +49,16 @@ Ext.define('luter.view.showcase.combodemo.ComboDemo', {
                     valueField: 'id',
                     displayField: 'valueField',
                     selectChildren: true,
-                    canSelectFolders: false,
-                    name: 'object'
+                    //加列定义，就变成下拉grid了。
+                    // columns: [{
+                    //     header: '名字',
+                    //     dataIndex: 'valueField'
+                    //
+                    // }, {
+                    //     header: 'ID',
+                    //     dataIndex: 'id'
+                    // }],
+                    canSelectFolders: false
                 })
             ],
             buttons: [{

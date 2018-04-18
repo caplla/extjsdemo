@@ -19,11 +19,11 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class TSRoleUser extends BaseEntity implements Serializable {
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne()
     @JoinColumn(name = "role")
     @NotFound(action = NotFoundAction.EXCEPTION)
     private TSRole role;
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne()
     @JoinColumn(name = "user")
     @NotFound(action = NotFoundAction.EXCEPTION)
     private TSUser user;

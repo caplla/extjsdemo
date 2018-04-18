@@ -86,11 +86,17 @@ var icon_prefix = " fa blue-color ", baseConfig = {
             pid: '上级节点',
             uri: 'URI',
             module_id: '模块id',
-            perm:'权限标识',
+            perm: '权限标识',
             iconCls: 'font图标',
             res_type: '类型',
             qtip: '提示文本'
 
-        }
+        },
+        cat: {
+            id: 'ID',
+            name: '猫的名字',
+            gender: '公的母的',
+            age: '多大了?'
+        },
     }
 };

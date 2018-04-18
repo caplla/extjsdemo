@@ -217,7 +217,7 @@ public class ResourceController extends BaseController {
                     vo.setLeaf(false);
                     vo.setExpanded(true);
                 }
-                vo.setQtip(fuc.getRemarks());
+                vo.setQtip(fuc.getQtip());
                 vo.setText(fuc.getName());
                 vo.setIconCls(" fa fa-lg  " + fuc.getIconCls());
                 vo.setPid(fuc.getPid());

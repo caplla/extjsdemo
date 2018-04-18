@@ -5,12 +5,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Table(name = "t_s_user")
 @Entity
@@ -25,6 +29,11 @@ public class TSUser implements Serializable {
     private String salt;
     private String gender;
     private Boolean locked;
+
+    @Transient
+    List<TSRole> roles;
+
+
     /**
      * 唯一ID,字符串
      */
