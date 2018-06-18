@@ -10,13 +10,27 @@ http://docs.sencha.com/extjs/6.2.0/classic/Ext.html
 
 ### 上图
 
-![Alt text](https://github.com/MayBeWrong/extjsdemo/blob/master/Screenshots/1.png)
 ![Alt text](https://github.com/MayBeWrong/extjsdemo/blob/master/Screenshots/2.png)
-![Alt text](https://github.com/MayBeWrong/extjsdemo/blob/master/Screenshots/3.png)
-![Alt text](https://github.com/MayBeWrong/extjsdemo/blob/master/Screenshots/4.png)
-![Alt text](https://github.com/MayBeWrong/extjsdemo/blob/master/Screenshots/5.png)
-![Alt text](https://github.com/MayBeWrong/extjsdemo/blob/master/Screenshots/6.png)
+
 ![Alt text](https://github.com/MayBeWrong/extjsdemo/blob/master/Screenshots/7.png)
+
+![Alt text](https://github.com/MayBeWrong/extjsdemo/blob/master/Screenshots/6.png)
+
+![Alt text](https://github.com/MayBeWrong/extjsdemo/blob/master/Screenshots/5.png)
+
+![Alt text](https://github.com/MayBeWrong/extjsdemo/blob/master/Screenshots/4.png)
+
+![Alt text](https://github.com/MayBeWrong/extjsdemo/blob/master/Screenshots/3.png)
+
+
+
+![Alt text](https://github.com/MayBeWrong/extjsdemo/blob/master/Screenshots/1.png)
+
+
+
+
+
+
 
 
 
