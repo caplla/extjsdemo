@@ -36,11 +36,11 @@ http://docs.sencha.com/extjs/6.2.0/classic/Ext.html
 
 
 #### 部署运行
-1、fork本项目
-2、配置application.properties,修改其中数据库为你的数据库信息。也可以在这里修改启动端口。
-3、启动项目
-4、访问：http://ip:port
-5、系统启动默认会建立一个账号:admin，密码:aaaaaa，并且加入一些固定权限，留意启动日志。
+* 1、fork本项目
+* 2、配置application.properties,修改其中数据库为你的数据库信息。也可以在这里修改启动端口。
+* 3、启动项目
+* 4、访问：http://ip:port
+* 5、系统启动默认会建立一个账号:admin，密码:aaaaaa，并且加入一些固定权限，留意启动日志。
 
 
 ###### 注意
