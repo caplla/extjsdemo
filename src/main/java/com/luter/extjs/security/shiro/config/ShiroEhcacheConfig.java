@@ -7,9 +7,8 @@ import com.luter.extjs.security.shiro.filter.PermsAuthorizationFilter;
 import com.luter.extjs.security.shiro.listener.LuterSessionListener;
 import com.luter.extjs.security.shiro.realm.UserRealm;
 import com.luter.extjs.security.shiro.session.SessionIDGenerator;
-import com.luter.extjs.util.json.JacksonUtils;
+import com.luter.extjs.utils.json.JacksonUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.session.SessionListener;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -81,7 +80,7 @@ public class ShiroEhcacheConfig {
         //拦截器.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         Map<String, String> dbperm = ss.loadFilterChainDefinitions();
-        log.info("加载到的权限:{}", JacksonUtils.mapToJon(dbperm));
+        log.info("加载到的权限:{}", JacksonUtil.mapToJon(dbperm));
         filterChainDefinitionMap.putAll(dbperm);
         //这玩意必须在最后面
         filterChainDefinitionMap.put("/**", "anon");
@@ -96,7 +95,6 @@ public class ShiroEhcacheConfig {
         manager.setSessionManager(sessionManager());
         return manager;
     }
-
 
 
     @Bean
@@ -141,6 +139,7 @@ public class ShiroEhcacheConfig {
     public UserRealm userRealm() {
         UserRealm myShiroRealm = new UserRealm();
         myShiroRealm.setCredentialsMatcher(retryLimitHashedCredentialsMatcher());
+        myShiroRealm.setCachingEnabled(false);//禁止用户权限的缓存，每次用户操作都会重读数据库
         return myShiroRealm;
     }
 
@@ -153,12 +152,6 @@ public class ShiroEhcacheConfig {
         return r;
     }
 
-    /**
-     * 开启shiro aop注解支持.
-     * 使用代理方式;所以需要开启代码支持;
-     *
-     * @return
-     */
     @Bean
     @ConditionalOnMissingBean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {

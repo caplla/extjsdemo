@@ -1,14 +1,16 @@
 package com.luter.extjs.module.sys.controller;
 
-import com.luter.extjs.entity.base.BaseEntity;
-import com.luter.extjs.util.ext.ExtDataModel;
+import com.luter.extjs.base.controller.BaseController;
+import com.luter.extjs.base.service.BaseService;
+import com.luter.extjs.utils.web.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +21,17 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @Slf4j
-public class IndexController extends BaseEntity {
+public class IndexController extends BaseController {
+
+    @Autowired
+    BaseService ss;
 
     @GetMapping({"", "/", "/index"})
-    public String index(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String index(ModelMap modelMap, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         Subject subject = SecurityUtils.getSubject();
         if (subject.isAuthenticated()) {
+            modelMap.put("user", ss.getCurrentUser());
+            modelMap.putAll(getSysConfig());
             return "index";
         }
         redirectAttributes.addFlashAttribute("message", "请登录");
@@ -32,11 +39,12 @@ public class IndexController extends BaseEntity {
     }
 
     @GetMapping("/login")
-    public String toLogin(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String toLogin(ModelMap modelMap,HttpServletRequest request, RedirectAttributes redirectAttributes) {
         Subject subject = SecurityUtils.getSubject();
         if (subject.isAuthenticated()) {
             return "redirect:index";
         }
+        modelMap.putAll(getSysConfig());
         return "login";
     }
 
@@ -51,7 +59,7 @@ public class IndexController extends BaseEntity {
         subject.login(token);
         Subject currentUser = SecurityUtils.getSubject();
         if (currentUser.isAuthenticated()) {
-            return  new ExtDataModel<>().ok("成功");
+            return ResponseUtils.ok("成功");
         }
         throw new UnauthorizedException("请登录啊");
     }
@@ -63,7 +71,7 @@ public class IndexController extends BaseEntity {
         if (subject.isAuthenticated()) {
             subject.logout();
         }
-        return "ok";
+        return ResponseUtils.ok("成功");
     }
-
 }
+

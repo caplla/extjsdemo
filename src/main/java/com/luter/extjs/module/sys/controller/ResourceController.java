@@ -1,21 +1,24 @@
 package com.luter.extjs.module.sys.controller;
 
+
+import com.luter.extjs.base.aop.SysLog;
 import com.luter.extjs.base.config.R;
 import com.luter.extjs.base.controller.BaseController;
-import com.luter.extjs.entity.sys.*;
-import com.luter.extjs.security.shiro.realm.UserRealm;
-import com.luter.extjs.util.ext.*;
-import com.luter.extjs.service.base.BaseService;
-import com.luter.extjs.util.dao.ConditionQuery;
-import com.luter.extjs.util.dao.OrderBy;
+import com.luter.extjs.base.service.BaseService;
+import com.luter.extjs.common.util.ConditionQuery;
+import com.luter.extjs.entity.sys.TSResource;
+import com.luter.extjs.entity.sys.TSRoleResource;
+import com.luter.extjs.entity.sys.TSRoleUser;
+import com.luter.extjs.entity.sys.TSUser;
+import com.luter.extjs.security.service.SecurityService;
+import com.luter.extjs.utils.ext.ExtPager;
+import com.luter.extjs.utils.ext.ExtTreeModel;
+import com.luter.extjs.utils.web.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.UnauthorizedException;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,201 +30,116 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@RequestMapping("/resource")
+@RequestMapping("/sys/resource")
 public class ResourceController extends BaseController {
     @Autowired
-    BaseService ss;
+    private BaseService ss;
 
     @Autowired
-    UserRealm userRealm;
+    SecurityService securityService;
 
-    @GetMapping("/list")
+    @PostMapping("/list")
+    @SysLog
     public Object list(HttpServletRequest request, ExtPager pager) {
         ConditionQuery query = new ConditionQuery();
-        OrderBy orderBy = pager.getOrder();
-        List<TSResource> objs = ss.listPageByConditionQueryInOrderWithOffset(TSResource.class, query, orderBy, pager.getStart(), pager.getLimit());
-        int count = ss.getCountByConditionQuery(TSResource.class, query);
-        return new ExtDataModel<>().ok(count, objs);
+        return ss.listExtPage(TSResource.class, query, pager);
     }
 
-    @GetMapping("/tree/async")
-    public Object asyncTree(HttpServletRequest request) {
-        String pid = ServletRequestUtils.getStringParameter(request, "node", "");
-        if (null!=pid) {
-            List<TSResource> childs = ss.findByProperty(TSResource.class, "pid", pid);
-            return ResponseEntity.ok(childs);
+    @PostMapping("/add")
+    @SysLog
+    public Object add(HttpServletRequest request, TSResource obj) {
+        if (obj.getRes_type().equalsIgnoreCase(R.resourceType.perm)) {
+            ConditionQuery query = new ConditionQuery();
+            query.add(Restrictions.or(
+                    Restrictions.eq("uri", obj.getUri()),
+                    Restrictions.eq("perm", obj.getPerm())
+
+            ));
+            if (ss.getCountByConditionQuery(TSResource.class, query) > 0) {
+                return ResponseUtils.fail("资源路径或者权限标识重复，请检查");
+            }
         }
-        return ResponseEntity.status(500).body("父节点ID不对");
-    }
-
-    @PostMapping("/get")
-    public Object get(HttpServletRequest request, TSResource obj) {
-        TSResource data = ss.get(TSResource.class, obj.getId());
-        if (null == data) {
-            return new ExtDataModel<>().fail(10000, "对不起，没找到这个角色");
-        }
-        return new ExtDataModel<>().ok("", data);
-    }
-
-    @PostMapping("/create")
-    public Object create(HttpServletRequest request, TSResource obj) {
         ss.save(obj);
-        return new ExtDataModel<>().ok("添加成功");
+        securityService.updatePermission();
+        return ResponseUtils.ok("添加成功");
     }
 
     @PostMapping("/update")
+    @SysLog
     public Object update(HttpServletRequest request, TSResource obj) {
-        TSResource data = ss.get(TSResource.class, obj.getId());
-        if (null == data) {
-            return new ExtDataModel<>().fail(10000, "对不起，没找到这个角色");
+        TSResource record = ss.get(TSResource.class, obj.getId());
+        if (null == record) {
+            return ResponseUtils.fail("错误:要修改的数据不存在");
         }
-        ss.updateEntitie(data);
-        return new ExtDataModel<>().ok("修改成功");
+
+        record.setIcon(obj.getIcon());
+        record.setModule(obj.getModule());
+        record.setName(obj.getName());
+        record.setPerm(obj.getPerm());
+        record.setRes_type(obj.getRes_type());
+        record.setTip(obj.getTip());
+        record.setUri(obj.getUri());
+        record.setIshref(obj.getIshref());
+        record.setHref(obj.getHref());
+        ss.updateEntitie(record);
+        securityService.updatePermission();
+        return ResponseUtils.ok("修改成功", record);
     }
 
-    @PostMapping("/delete")
-    public Object delete(HttpServletRequest request, TSResource obj) {
-        TSResource data = ss.get(TSResource.class, obj.getId());
-        if (null == data) {
-            return new ExtDataModel<>().fail(10000, "对不起，没找到这个角色");
+    @PostMapping("/view")
+    @SysLog
+    public Object view(HttpServletRequest request, TSResource obj) {
+        TSResource record = ss.get(TSResource.class, obj.getId());
+        if (null == record) {
+            return ResponseUtils.fail("错误:要修改的数据不存在");
         }
-        ss.delete(data);
-        return new ExtDataModel<>().ok("删除成功");
+
+        return ResponseUtils.ok(record);
     }
 
-    @PostMapping("/AuthRoleResource")
-    public Object AuthRoleResource(HttpServletRequest request) {
-        String menuids = ServletRequestUtils.getStringParameter(request, "ids",
-                "");
-        String roleid = ServletRequestUtils.getStringParameter(request,
-                "role", "");
-        if (StringUtils.isEmpty(menuids)) {
-            return ResponseEntity.status(500).body(new ExtDataModel<>().fail("权限为空，不做处理"));
-        }
-        if (StringUtils.isEmpty(roleid)) {
-            return ResponseEntity.status(500).body(new ExtDataModel<>().fail("请选择角色"));
-        }
-        TSRole role = ss.get(TSRole.class, roleid);
-        if (role == null) {
-            return ResponseEntity.status(500).body(new ExtDataModel<>().fail("请选择角色"));
-        }
-        String dd = menuids.replace("[", "").replace("]", "");
-        if (StringUtils.isEmpty(dd)) {
-            List<TSRoleResource> rm = ss.findByProperty(TSRoleResource.class,
-                    "role.id", roleid);
-            if (rm != null && rm.size() > 0) {
-                for (TSRoleResource aaa : rm) {
-                    ss.delete(aaa);
-                }
-            }
-            return ResponseEntity.ok(new ExtDataModel<>().ok("授权成功,该角色被设置为：不具有任何系统使用权限。"));
-        } else {
-            String a[] = dd.split(",");
-            if (a.length > 0) {
-                List<TSRoleResource> rm = ss.findByProperty(
-                        TSRoleResource.class, "role.id", roleid);
-                if (rm != null && rm.size() > 0) {
-                    for (TSRoleResource aaa : rm) {
-                        ss.delete(aaa);
-                    }
-                    for (String c : a) {
-                        TSRoleResource rolem = new TSRoleResource();
-                        TSResource cmTsMenu = ss.get(TSResource.class, c.replace("\"", "").replace("\"", ""));
-                        if (cmTsMenu != null) {
-                            rolem.setResource(cmTsMenu);
-                            rolem.setRole(role);
-                            ss.saveOrUpdate(rolem);
-                        } else {
-                            log.info("resource为空");
-                        }
-                    }
-                } else {
-                    for (String c : a) {
-                        TSRoleResource rolem = new TSRoleResource();
-                        TSResource cmTsMenu = ss.get(TSResource.class, c
-                                .replace("\"", "").replace("\"", ""));
-                        if (cmTsMenu != null) {
-                            rolem.setResource(cmTsMenu);
-                            rolem.setRole(role);
-                            ss.saveOrUpdate(rolem);
-                        } else {
-                            log.info("resource为空");
-                        }
-                    }
-                }
-                userRealm.clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
-                return ResponseEntity.ok(new ExtDataModel<>().ok("授权成功"));
 
-            } else {
-                return ResponseEntity.status(500).body(new ExtDataModel<>().fail("权限项为空，不做授权"));
-            }
-        }
-
+    @PostMapping("/tree/sync")
+    @SysLog
+    public Object syncTree(HttpServletRequest request) {
+        String node = ServletRequestUtils.getStringParameter(request, "node", null);
+        return ResponseUtils.ok(ss.findByProperty(TSResource.class, "pid", node));
     }
 
-    @GetMapping("/getSysUserTreeData")
-    public Object getSysUserTreeData(HttpServletRequest request) {
-        TSUser user = getCurrentUser();
+    @PostMapping("/user/tree/async")
+    @SysLog
+    public Object asyncUserTree(HttpServletRequest request) {
+        TSUser user = ss.getCurrentUser();
         if (null == user) {
-            throw new UnauthorizedException("请登录");
+            return ResponseUtils.fail(HttpStatus.UNAUTHORIZED, "请登录");
         }
         String sql = "select * from " + TSResource.class.getAnnotation(Table.class).name()
                 + " where id in (select resource from " + TSRoleResource.class.getAnnotation(Table.class).name()
-                + " where role in (select role from " + TSRoleUser.class.getAnnotation(Table.class).name()
-                + " where user='" + user.getId() + "'))";
-        log.info(sql);
-        List<TSResource> all = ss.findListbySql(sql, TSResource.class);
-        List<ExtTreeModel> nodes = transformer(all);
+                + " where role  in (select role from " + TSRoleUser.class.getAnnotation(Table.class).name()
+                + " where user='" + user.getId() + "' "
+                + ")) and res_type<>'" + R.resourceType.perm + "'";
+        List<TSResource> resources = ss.findListbySql(sql, TSResource.class);
+        List<ExtTreeModel> rlist = transformer(resources);
         ExtTreeModel root = new ExtTreeModel();
-        root.setId("0");//pid=0的都是顶级节点
-        root.setLeaf(false);
-        return ResponseEntity.ok().body(getTheTree(nodes, root));
-    }
-
-    @GetMapping("/getAuthTreeData")
-    public Object getAuthTreeData(HttpServletRequest request) {
-
-        String roleid = ServletRequestUtils.getStringParameter(request,
-                "role", "");
-        log.info("获取用户权限树,角色:{}", roleid);
-        List<TSRoleResource> roleResources = ss.findByProperty(TSRoleResource.class,
-                "role.id", roleid);
-        log.info("角色的权限共有:{}个", roleResources.size());
-        List<TSResource> all = ss.loadAll(TSResource.class);
-        List<ExtAsyncTreeModel> nodes = RoleAuthtransformer(roleResources, all);
-        ExtAsyncTreeModel root = new ExtAsyncTreeModel();
         root.setId("0");
-        root.setText("资源权限树");
         root.setLeaf(false);
-        root.setExpanded(false);
-        return getTheTree(nodes, root);
+        return getTheTree(rlist, root);
     }
 
-    //授权树
-    private List<ExtAsyncTreeModel> RoleAuthtransformer(List<TSRoleResource> resources, List<TSResource> all) {
-        List<ExtAsyncTreeModel> nodes = new ArrayList<>();
-        List<TSResource> authList = new ArrayList<>();
-        if (!resources.isEmpty()) {
-            for (TSRoleResource ru : resources) {
-                authList.add(ru.getResource());
-            }
-        }
-        if (null != all && all.size() > 0) {
-            for (TSResource fuc : all) {
-                ExtAsyncTreeModel vo = new ExtAsyncTreeModel();
-                vo.setId(fuc.getId());
-                if (StringUtils.isNotEmpty(fuc.getRes_type()) && StringUtils.equalsIgnoreCase(fuc.getRes_type(), R.resourceType.perm)) {
-                    vo.setLeaf(true);
-                    vo.setExpanded(false);
-                } else {
-                    vo.setLeaf(false);
-                    vo.setExpanded(true);
-                }
-                vo.setQtip(fuc.getQtip());
-                vo.setText(fuc.getName());
-                vo.setIconCls(" fa fa-lg  " + fuc.getIconCls());
-                vo.setPid(fuc.getPid());
-                vo.setChecked(authList.contains(fuc));
+    private List<ExtTreeModel> transformer(List<TSResource> resources) {
+        List<ExtTreeModel> nodes = new ArrayList<>();
+        if (null != resources && resources.size() > 0) {
+            for (TSResource resource : resources) {
+                ExtTreeModel vo = new ExtTreeModel();
+                vo.setLeaf(resource.getRes_type().equalsIgnoreCase(R.resourceType.module));
+                vo.setId(resource.getId());
+                vo.setQtip(resource.getTip());
+                vo.setText(resource.getName());
+                vo.setHref("");
+                vo.setIconCls(" " + resource.getIcon());
+                vo.setPid(resource.getPid());
+                vo.setIshref(resource.getIshref());
+                vo.setHref(resource.getHref());
+                vo.setModule(resource.getModule());
                 nodes.add(vo);
 
             }
@@ -230,69 +148,15 @@ public class ResourceController extends BaseController {
 
     }
 
-    private ExtAsyncTreeModel getTheTree(List<ExtAsyncTreeModel> allNodes, ExtAsyncTreeModel root) {
-        if (!root.isLeaf()) {
-            List<ExtAsyncTreeModel> fucList = getChilds(allNodes, root);
-            if (fucList != null && fucList.size() > 0) {
-                List<ExtAsyncTreeModel> children = new ArrayList<>();
-                for (ExtAsyncTreeModel d : fucList) {
-                    ExtAsyncTreeModel t = getTheTree(allNodes, d);
-                    children.add(t);
-                }
-                root.setChildren(fucList);
-            }
-        }
-        return root;
-
-    }
-
-    private List<ExtAsyncTreeModel> getChilds(List<ExtAsyncTreeModel> allNodes, ExtAsyncTreeModel root) {
-        List<ExtAsyncTreeModel> childs = new ArrayList<>();
-        if (!allNodes.isEmpty()) {
-            for (ExtAsyncTreeModel m : allNodes) {
-                if (m.getPid().equalsIgnoreCase(root.getId())) {
-                    childs.add(m);
-                }
-            }
-        }
-        return childs;
-    }
-
-    //菜单树
-    private List<ExtTreeModel> transformer(List<TSResource> trees) {
-        List<ExtTreeModel> nodes = new ArrayList<>();
-        if (null != trees && trees.size() > 0) {
-            for (TSResource tree : trees) {
-                if (null != tree) {
-                    ExtTreeModel vo = new ExtTreeModel();
-                    vo.setText(tree.getName());
-                    vo.setId(tree.getId() + "");
-                    vo.setQtip(tree.getQtip());
-                    vo.setHref("");
-                    vo.setIconCls(" fa fa-lg red-color " + tree.getIconCls());
-                    vo.setPid(tree.getPid() + "");
-                    vo.setLeaf(tree.getRes_type().equalsIgnoreCase(R.resourceType.module));
-                    vo.setModule_id(tree.getModule_id());
-                    nodes.add(vo);
-                }
-
-            }
-        }
-        return nodes;
-
-    }
-
     private ExtTreeModel getTheTree(List<ExtTreeModel> allNodes, ExtTreeModel root) {
-        if (!root.isLeaf()) {
-            List<ExtTreeModel> fucList = getChilds(allNodes, root);
-            if (fucList != null && fucList.size() > 0) {
-                List<ExtTreeModel> children = new ArrayList<>();
-                for (ExtTreeModel d : fucList) {
-                    ExtTreeModel t = getTheTree(allNodes, d);
-                    children.add(t);
-                }
-                root.setChildren(fucList);
+        List<ExtTreeModel> fucList = getChilds(allNodes, root);
+        if (fucList != null && fucList.size() > 0) {
+            List<ExtTreeModel> children = new ArrayList<>();
+            for (ExtTreeModel d : fucList) {
+                ExtTreeModel t = getTheTree(allNodes, d);
+                children.add(t);
             }
+            root.setChildren(fucList);
         }
         return root;
 
@@ -302,12 +166,11 @@ public class ResourceController extends BaseController {
         List<ExtTreeModel> childs = new ArrayList<>();
         if (!allNodes.isEmpty()) {
             for (ExtTreeModel m : allNodes) {
-                if (m.getPid().equalsIgnoreCase(root.getId())) {
+                if (m.getPid().equals(root.getId())) {
                     childs.add(m);
                 }
             }
         }
         return childs;
     }
-
 }

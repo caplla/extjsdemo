@@ -1,28 +1,39 @@
-<!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.springframework.org/schema/data/jaxb">
 <head>
-    <meta content="text/html;charset=UTF-8"/>
-    <title>Extjs6.2.0示例应用</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <!--<link th:href="@{/webjars/extjs/6.2.0/classic/theme-crisp/resources/theme-crisp-all.css}" rel="stylesheet"/>-->
-    <!--<link th:href="@{/webjars/extjs/6.2.0/classic/theme-neptune/resources/theme-neptune-all.css}" rel="stylesheet"/>-->
+    <title>DANYE-ExtjsDemo</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="icon" type="image/x-icon" th:href="@{/static/favicon.ico}">
     <link th:href="@{/webjars/extjs/6.2.0/classic/theme-triton/resources/theme-triton-all.css}" rel="stylesheet"/>
-    <!--<link th:href="@{/webjars/extjs/6.2.0/classic/theme-gray/resources/theme-gray-all.css}" rel="stylesheet"/>-->
-    <link th:href="@{/webjars/assets/vendor/fontawesome/4.4.0/css/font-awesome.min.css}" rel="stylesheet"/>
-    <link th:href="@{/app/resource/css/style.css}" rel="stylesheet"/>
-    <link th:href="@{/app/resource/css/admin.css}" rel="stylesheet"/>
+    <link th:href="@{/css/admin30.css}" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
 <body>
+<script th:inline="javascript">
+    var currentUser = {};
+    currentUser.userid = [[${user.id}]];
+    currentUser.username = [[${user.username}]];
+    currentUser.realname = [[${user.realname}]];
+    currentUser.last_login_time = [[${user.last_login_time}]];
+    var sysconfig = {};
+    sysconfig.tabmodel = true;//是否开启tab模式
+    sysconfig.year = [[${year}]];
+    sysconfig.name = [[${name}]];
+    sysconfig.copyright = [[${copyright}]];
+    sysconfig.vesion = [[${version}]];
+    sysconfig.vendorname = [[${vendorname}]];
+    sysconfig.productname = [[${productname}]];
+</script>
 <script th:src="@{/webjars/extjs/6.2.0/ext-all.js}"></script>
-<!--<script th:src="@{/webjars/extjs/6.2.0/classic/theme-crisp/theme-crisp.js}"></script>-->
-<!--<script th:src="@{/webjars/extjs/6.2.0/classic/theme-neptune/theme-neptune.js}"></script>-->
 <script th:src="@{/webjars/extjs/6.2.0/classic/theme-triton/theme-triton.js}"></script>
-<!--<script th:src="@{/webjars/extjs/6.2.0/classic/theme-gray/theme-gray.js}"></script>-->
 <script th:src="@{/webjars/extjs/6.2.0/classic/locale/locale-zh_CN.js}"></script>
 <script th:src="@{/webjars/assets/echart/echarts.min.js}"></script>
-<script th:src="@{/app/luter/utils.js}"></script>
-<script th:src="@{/app/luter/config.js}"></script>
-<script th:src="@{/app/luter/app.js}"></script>
-<script th:src="@{/app/luter/Regions.js}"></script>
+<script th:src="@{/webjars/assets/echart/dark.js}"></script>
+<script th:src="@{/webjars/assets/echart/macarons.js}"></script>
+<script th:src="@{/app/config.js}"></script>
+<script th:src="@{/app/utils.js}"></script>
+<script th:src="@{/app/app.js}"></script>
+
 </body>
 </html>

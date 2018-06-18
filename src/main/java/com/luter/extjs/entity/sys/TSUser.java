@@ -1,122 +1,80 @@
 package com.luter.extjs.entity.sys;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.luter.extjs.entity.base.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Formula;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-@Table(name = "t_s_user")
 @Entity
 @DynamicInsert
 @DynamicUpdate
+@Table(name = "t_sys_user")
 @Data
-public class TSUser implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer",
+        "password", "salt"})
+@Accessors(chain = true)
+public class TSUser extends BaseEntity implements java.io.Serializable {
+
+    private static final long serialVersionUID = 2750364996101898409L;
+    /**
+     * @Fields username : 用户名
+     */
     private String username;
-    @JsonIgnore
+    /**
+     * @Fields realname : 真实姓名
+     */
+    private String realname;
+    /**
+     * 真实姓名的拼音
+     */
+    private String realname_py;
+    /**
+     * 真实姓名的拼音首字母
+     */
+    private String realname_pyhd;
+
+    /**
+     * @Fields avatar : 用户头像
+     */
+    private String avatar;
+    /**
+     * @Fields password : 密码
+     */
     private String password;
-    @JsonIgnore
+    /**
+     * @Fields salt : 盐
+     */
     private String salt;
-    private String gender;
+    /**
+     * @Fields locked : 是否锁定
+     */
     private Boolean locked;
+    private Boolean reserved;
+    private String last_login_client;
+    private String last_login_ip;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date last_login_time;
 
     @Transient
-    List<TSRole> roles;
+    private String roles;
 
-
-    /**
-     * 唯一ID,字符串
-     */
-    @Id
-    @Column(unique = true, length = 128, nullable = false)
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
-    private String id;
-    /**
-     * 创建时间
-     */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date created_at;
-
-    /**
-     * 最后一次修改时间
-     */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date update_at;
-
-    /**
-     * 数据版本
-     */
-    @Version
-    private int version;
-
-    /**
-     * 保存之前
-     */
-    @PrePersist
-    public void PrePersist() {
-        this.created_at = new Date();
+    public String getRoles() {
+        return roles;
     }
 
-    /**
-     * 保存之后
-     */
-    @PostPersist
-    public void postPersist() {
-
-    }
-
-    /**
-     * 更新之前
-     */
-    @PreUpdate
-    public void preUpdate() {
-        this.update_at = new Date();
-    }
-
-    /**
-     * 更新之后
-     */
-    @PostUpdate
-    public void postUpdate() {
-
-    }
-
-    /**
-     * 删除之前
-     */
-    @PreRemove
-    public void preRemove() {
-
-    }
-
-    /**
-     * 删除之后
-     */
-    @PostRemove
-    public void postRemove() {
-
-    }
-
-    /**
-     * 加载数据后
-     */
-    @PostLoad
-    public void postLoad() {
-
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 }

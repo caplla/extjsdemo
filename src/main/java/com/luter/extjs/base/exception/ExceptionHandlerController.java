@@ -1,8 +1,9 @@
 package com.luter.extjs.base.exception;
 
 
-import com.luter.extjs.util.ext.ExtDataModel;
-import com.luter.extjs.util.web.ResponseUtils;
+ 
+import com.luter.extjs.utils.model.DataModel;
+import com.luter.extjs.utils.web.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -31,7 +32,7 @@ public class ExceptionHandlerController {
         log.error("发生错误\n", e);
         String emsg = e.getLocalizedMessage() + "." + (null != e.getCause() ? e.getCause().getMessage() : "");
         log.error("发生内部错误，错误代码:{},错误内容:{}", 500, emsg);
-        return new ExtDataModel().fail(e.getCode(), e.getMessage(), emsg);
+        return new DataModel().fail(e.getCode(), e.getMessage(), emsg);
 
     }
     @ExceptionHandler(NoHandlerFoundException.class)
@@ -42,7 +43,7 @@ public class ExceptionHandlerController {
         String emsg = e.getLocalizedMessage() + "." + (null != e.getCause() ? e.getCause().getMessage() : "");
         log.error("用户访问URI:{},访问的资源没找到，返回HttpStatus.NOT_FOUND" +
                 ",错误信息:{}", request.getRequestURI(), e.getLocalizedMessage() + e.getCause());
-        return new ExtDataModel<>().fail(HttpStatus.NOT_FOUND.value(), "没找到您要访问的资源", emsg);
+        return new DataModel<>().fail(HttpStatus.NOT_FOUND.value(), "没找到您要访问的资源", emsg);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -53,7 +54,7 @@ public class ExceptionHandlerController {
         String emsg = e.getLocalizedMessage() + "." + (null != e.getCause() ? e.getCause().getMessage() : "");
         log.info("用户访问URI:{},访问方法不被支持，比如GET/POST错误，" +
                 "返回HttpStatus.METHOD_NOT_ALLOWED.错误信息:{}", request.getRequestURI(), e.getLocalizedMessage() + e.getCause());
-        return new ExtDataModel().fail(HttpStatus.METHOD_NOT_ALLOWED.value(), "访问方法不被支持", emsg);
+        return new DataModel().fail(HttpStatus.METHOD_NOT_ALLOWED.value(), "访问方法不被支持", emsg);
     }
 
 
@@ -64,7 +65,7 @@ public class ExceptionHandlerController {
         log.error("发生错误\n", e);
         String emsg = e.getLocalizedMessage() + "." + (null != e.getCause() ? e.getCause().getMessage() : "");
         log.error("发生内部错误，违反唯一性约束。错误代码:{},错误内容:{}", 500, emsg);
-        return new ExtDataModel().fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "处理发生错误，存在重复数据，请检查", emsg);
+        return new DataModel().fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "处理发生错误，存在重复数据，请检查", emsg);
     }
 
     @ExceptionHandler(value = {Exception.class})
@@ -74,7 +75,7 @@ public class ExceptionHandlerController {
         log.error("发生错误\n", e);
         String emsg = e.getLocalizedMessage() + "." + (null != e.getCause() ? e.getCause().getMessage() : "");
         log.error("发生内部错误，错误代码:{},错误内容:{}", 500, emsg);
-        return new ExtDataModel().fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "处理发生错误，请检查", emsg);
+        return new DataModel().fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "处理发生错误，请检查", emsg);
     }
 
 
@@ -87,7 +88,7 @@ public class ExceptionHandlerController {
         log.error("发生错误\n", e);
         String emsg = e.getLocalizedMessage() + "." + (null != e.getCause() ? e.getCause().getMessage() : "");
         log.error("发生内部错误，错误代码:{},错误内容:{}", 500, emsg);
-        return new ExtDataModel().fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "处理发生错误，请检查", emsg);
+        return new DataModel().fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "处理发生错误，请检查", emsg);
     }
 
     @ExceptionHandler(value = {UnknownAccountException.class})
@@ -96,7 +97,7 @@ public class ExceptionHandlerController {
     public Object UnknownAccountException(HttpServletRequest request, HttpServletResponse response, UnknownAccountException e) {
         String emsg = e.getLocalizedMessage() + "." + (null != e.getCause() ? e.getCause().getMessage() : "");
         log.error("发生内部错误，错误代码:{},错误内容:{}", 500, emsg);
-        return new ExtDataModel().fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "账户不存在", emsg);
+        return new DataModel().fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "账户不存在", emsg);
     }
     @ExceptionHandler(value = {LockedAccountException.class})
     @ResponseStatus(HttpStatus.LOCKED)
@@ -104,7 +105,7 @@ public class ExceptionHandlerController {
     public Object LockedAccountException(HttpServletRequest request, HttpServletResponse response, LockedAccountException e) {
         String emsg = e.getLocalizedMessage() + "." + (null != e.getCause() ? e.getCause().getMessage() : "");
         log.error("发生内部错误，错误代码:{},错误内容:{}", HttpStatus.LOCKED.value(), emsg);
-        return new ExtDataModel().fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "账户被锁定，请联系管理员", emsg);
+        return new DataModel().fail(HttpStatus.INTERNAL_SERVER_ERROR.value(), "账户被锁定，请联系管理员", emsg);
     }
     @ExceptionHandler(value = {UnauthenticatedException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -114,7 +115,7 @@ public class ExceptionHandlerController {
         log.error("发生内部错误，错误代码:{},错误内容:{}", 401, emsg);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         if (ResponseUtils.isJson(request)) {
-            ResponseUtils.sendJsonResponse(response, new ExtDataModel().fail(HttpStatus.UNAUTHORIZED.value(), "请登录", emsg));
+            ResponseUtils.sendJsonResponse(response, new DataModel().fail(HttpStatus.UNAUTHORIZED.value(), "请登录", emsg));
             return null;
         }
         log.error("需要登录的访问法");
@@ -129,7 +130,7 @@ public class ExceptionHandlerController {
         log.error("发生内部错误，错误代码:{},错误内容:{}", 401, emsg);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         if (ResponseUtils.isJson(request)) {
-            ResponseUtils.sendJsonResponse(response, new ExtDataModel().fail(HttpStatus.UNAUTHORIZED.value(), "用户名或者密码错误", emsg));
+            ResponseUtils.sendJsonResponse(response, new DataModel().fail(HttpStatus.UNAUTHORIZED.value(), "用户名或者密码错误", emsg));
             return null;
         }
         log.error("用户名或者密码错误");

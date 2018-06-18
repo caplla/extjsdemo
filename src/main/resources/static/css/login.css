@@ -1,0 +1,31 @@
+.bg {
+    background: url("../images/bg4.jpg") fixed center center no-repeat;
+    background-size: cover;
+    width: 100%;
+}
+
+.x-panel-header {
+    background: #190b60;
+
+}
+
+.loginform {
+    /*border: black 1px solid;*/
+}
+
+.loginPanel {
+    background: #190b60;
+}
+
+.green-btn {
+    background-color: green !important;
+}
+
+.x-btn-inner-default-toolbar-large {
+    color: #fff;
+    font-weight: 900;
+    font-size: 20px;
+}
+.x-form-text-default{
+    min-height: 40px!important;
+}

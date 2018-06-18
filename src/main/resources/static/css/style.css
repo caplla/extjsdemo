@@ -1,0 +1,282 @@
+
+body, html {
+    font-family: -apple-system, "SF UI Text", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Zen Hei", sans-serif;
+    /*text-shadow: 1px 0px 0px #ddd;*/
+    background: #ffffff;
+    margin: 0;
+    padding: 0;
+    color: #000000;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 18px;
+    overflow: hidden;
+    height: 100%;
+}
+
+.app-header {
+    background-color: #ffffff;
+    color: #000000;
+    border-bottom: 1px solid #f0f0f0;
+    -moz-box-shadow: 0px 1px 5px #888888;
+    box-shadow: 0px 1px 5px #888888;
+
+}
+
+.footer {
+    background-color: #ffffff;
+    border-bottom: 0px solid #f0f0f0;
+    /*-webkit-box-shadow: 0 1px 2px rgba(0, 0, 255, 0.8);*/
+    /*-moz-box-shadow: 0 1px 2px rgba(0, 0, 255, 0.8);*/
+    /*box-shadow: 0 1px 2px rgba(0, 0, 255, 0.8);*/
+}
+
+.title-text {
+    color: #000;
+    font-size: 24px;
+    padding: 0px 10px 0px 55px;
+    font-weight: 900
+}
+
+.footer-copyright {
+    color: #000000;
+    font-size: 12px;
+    text-align: left;
+    font-weight: 600
+}
+
+.footer-time {
+    color: #ffffff;
+    padding: 0px 0px 0px 0px;
+    font-weight: bold;
+    text-align: right;
+    font-size: 12px;
+}
+
+.app-header:hover {
+    /*-webkit-box-shadow: 0 1px 2px rgba(245, 238, 249, 0.8);*/
+    /*-moz-box-shadow: 0 1px 2px rgba(238, 234, 233, 0.8);*/
+    /*box-shadow: 0 1px 2px rgba(237, 246, 235, 0.8);*/
+}
+
+.circle-pic {
+    width: 45px;
+    height: 45px;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+.circle-image {
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+.home-body {
+    background-image: url(../images/square.gif);
+    -webkit-box-shadow: #ddd 0px 0px 10px;
+    -moz-box-shadow: #ddd 0px 0px 10px;
+    box-shadow: #ddd 0px 0px 10px;
+}
+
+.panel-body {
+    margin: 20px 20px 20px 20px;
+    -webkit-box-shadow: #ddd 0px 0px 10px;
+    -moz-box-shadow: #ddd 0px 0px 10px;
+    box-shadow: #ddd 0px 0px 10px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+
+}
+
+.panel-body:hover {
+    margin: 20px 20px 20px 20px;
+    -webkit-box-shadow: rgb(45, 140, 240) 0px 0px 10px;
+    -moz-box-shadow: rgb(45, 140, 240) 0px 0px 10px;
+    box-shadow: rgb(45, 140, 240) 0px 0px 10px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+
+}
+
+.avatar_btn {
+    background-image: url(../images/avatar.jpg);
+    width: 40px;
+    height: 40px;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+
+/*按钮颜色*/
+.blue-button {
+    background: #00cc99 none !important;
+}
+
+.red-btn {
+    background-color: red;
+}
+
+.green-btn {
+    background-color: green;
+}
+
+.red-color {
+    color: red;
+}
+
+.green-color {
+    color: green;
+}
+
+.blue-color {
+    color: blue;
+}
+.bg-red{
+    font-weight: 900;
+    color: white;
+    background-color: red;
+}
+.bg-blue{
+    color: white;
+    font-weight: 900;
+    background-color: blue;
+}
+.bg-green{
+    color: white;
+    font-weight: 900;
+    background-color: green;
+}
+.shadow {
+    margin: 20px 20px 20px 20px;
+    -webkit-box-shadow: #ddd 0px 5px 10px;
+    -moz-box-shadow: #ddd 0px 5px 10px;
+    box-shadow: #ddd 0px 5px 10px;
+}
+
+/*widget*/
+.luter_widget {
+    background-color: #ffffff;
+    -webkit-box-shadow: 0px 3px 3px #c8c8c8;
+    -moz-box-shadow: 0px 3px 3px #c8c8c8;
+    box-shadow: 0px 3px 3px #c8c8c8;
+    margin: 10px 10px 10px 10px;
+    /*-webkit-border-radius: 5px;*/
+    /*border-radius: 5px;*/
+    /*border-top: #673ab7 3px solid;*/
+}
+
+.infor-card {
+    height: 100px;
+    width: 100%;
+    padding: 0;
+    top: 0;
+    margin: 0;
+    /*-webkit-border-radius: 3px;*/
+    /*border-radius: 3px;*/
+
+}
+
+.infor-card-left {
+    height: inherit;
+    width: 30%;
+    padding: 0;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    float: left;
+    background-color: rgb(45, 140, 240);
+}
+
+.infor-card-right {
+    height: inherit;
+    width: 70%;
+    background: #ffffff;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding: 0;
+    float: right;
+}
+
+.widget-icon {
+    display: inline-block;
+    speak: none;
+    font-style: normal;
+    font-weight: 400;
+    color: white;
+    font-size: 32px;
+    padding-left: 5px;
+    font-variant: normal;
+    text-transform: none;
+    text-rendering: auto;
+    line-height: 1;
+    margin-top: 40%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.widget-number {
+    text-align: center;
+    color: rgb(45, 140, 240);
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.widget-intro-text {
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    color: #C8C8C8;
+}
+
+/*波浪*/
+.wave {
+    height: 50px;
+    position: relative;
+}
+
+.wave::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-repeat: repeat;
+    height: 10px;
+    background-size: 20px 20px;
+    background-image: radial-gradient(circle at 10px -5px, transparent 12px, aquamarine 13px);
+}
+
+.wave::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-repeat: repeat;
+    height: 15px;
+    background-size: 40px 20px;
+    /*background-image: radial-gradient(circle at 5px 10px, aquamarine 6px, transparent 7px);*/
+    background-image: radial-gradient(circle at 10px 15px, aquamarine 12px, transparent 13px);
+}
+
+.bordered {
+    position: relative;
+    height: 10px;
+    width: 100%;
+    border-top: 10px solid #2d8cf0;
+    background: #495060;
+    padding-top: 5px;
+
+}
+
+.bordered:before {
+    position: absolute;
+    content: '';
+    top: 0px;
+    height: 8px;
+    width: 100%;
+    background-size: 10px 10px;
+    background-position: -5px -3px;
+    /*background-image: -webkit-radial-gradient(50% 0%, circle, aquamarine 50%, transparent 55%);*/
+    /*background-image: -moz-radial-gradient(50% 0%, circle, aquamarine 50%, transparent 55%);*/
+    background-image: radial-gradient(circle at 50% 0%, #2d8cf0 50%, transparent 55%);
+}

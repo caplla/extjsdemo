@@ -1,0 +1,82 @@
+{
+  "id": 0,
+  "text": null,
+  "ishref": false,
+  "href": null,
+  "leaf": false,
+  "iconCls": null,
+  "qtip": null,
+  "module": null,
+  "pid": null,
+  "expanded": true,
+  "children": [
+    {
+      "id": 1,
+      //菜单的ID，必须全局唯一
+      "text": "系统管理",
+      //菜单名称
+      "ishref": true,
+      //是否是外部链接，如果是则会在iframe打开href链接
+      "href": "",
+      //外链的地址
+      "leaf": false,
+      //是否根节点，false说明这是个目录，可以展开。true,则说明是模块，点击了会打开模块首页
+      "iconCls": " x-fa fa-asterisk",
+      //图标，font aswsome 4.4.0版本支持
+      "qtip": "系统管理",
+      //鼠标悬停的提示信息
+      "module": "",
+      //如果leaf=true,则会使用这个参数打开模块首页。对应于views下面的目录路径。比如:sys.user.User
+      "pid": 0,
+      //上级ID，可无此字段
+      "expanded": true,
+      //是否展开这个节点，可以没有
+      "children": [
+        //这个菜单下的字菜单，如果没有，可以为空[]
+        {
+          "id": 11,
+          "text": "测试",
+          "ishref": false,
+          "href": "",
+          "leaf": true,
+          "iconCls": " x-fa fa-bars",
+          "qtip": "列表",
+          "module": "test.Test",
+          //这个对应到views下面的路径
+          "pid": 1,
+          "expanded": true,
+          "children": []
+        },
+        {
+          "id": 12,
+          "text": "用户管理",
+          "ishref": false,
+          "href": "",
+          "leaf": true,
+          "iconCls": " x-fa fa-bars",
+          "qtip": "用户列表",
+          "module": "sys.user.User",
+          //这个对应到views下面的路径
+          "pid": 1,
+          "expanded": true,
+          "children": []
+        },
+        {
+          "id": 13,
+          "text": "外部链接",
+          "ishref": true,
+          //这个代表是个外部链接，以iframe方式加载
+          "href": "http://www.sohu.com",
+          "leaf": true,
+          "iconCls": " x-fa fa-bars",
+          "qtip": "列表",
+          "module": "",
+          //外链的时候这个就不读了
+          "pid": 1,
+          "expanded": true,
+          "children": []
+        }
+      ]
+    }
+  ]
+}

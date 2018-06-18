@@ -33,13 +33,13 @@ public class UserRealm extends AuthorizingRealm {
             throw new AuthorizationException("请登录后操作");
         }
         log.info("查找用户:{}拥有的权限...", user.getUsername());
-        List<TSResource> perms = ss.getUsersResourceByUserId(user.getId());
+        List<TSResource> perms = ss.getUsersPerms(user.getId());
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         if (null != perms && perms.size() > 0) {
             log.info("用户:{}一共有{}个权限,现在开始加入权限缓存....", user.getUsername(), perms.size());
             perms.forEach(p -> {
                 info.addStringPermission(p.getPerm());
-                log.info("用户:{},加入权限:{},URI:{}",user.getUsername(),p.getPerm(),p.getUri());
+                log.info("用户:{},加入权限:{},URI:{}", user.getUsername(), p.getPerm(), p.getUri());
             });
         } else {
             log.warn("用户:{}不具备任何系统权限", user.getId());

@@ -1,8 +1,8 @@
 package com.luter.extjs.security.shiro.filter;
 
 
-import com.luter.extjs.util.ext.ExtDataModel;
-import com.luter.extjs.util.web.ResponseUtils;
+import com.luter.extjs.utils.model.DataModel;
+import com.luter.extjs.utils.web.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter;
@@ -29,7 +29,7 @@ public class PermsAuthorizationFilter extends PermissionsAuthorizationFilter {
             message = "请登录后操作";
         }
         httpServletResponse.setStatus(status.value());//设置请求返回status
-        ResponseUtils.sendJsonResponse(httpServletResponse, new ExtDataModel<>().fail(status.value(), message, status.getReasonPhrase()));//返回错误消息
+        ResponseUtils.sendJsonResponse(httpServletResponse, new DataModel<>().fail(status.value(), message, status.getReasonPhrase()));//返回错误消息
         return false;
     }
 

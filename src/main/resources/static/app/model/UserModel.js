@@ -1,0 +1,21 @@
+Ext.define('luter.model.UserModel', {
+extend : 'Ext.data.Model',
+fields : [
+         {name:'id'},
+             {name:'create_at'},
+             {name:'remarks'},
+             {name:'update_at'},
+             {name:'version'},
+             {name:'avatar'},
+             {name:'last_login_client'},
+             {name:'last_login_ip'},
+             {name:'last_login_time'},
+             {name:'locked'},
+             {name:'password'},
+             {name:'realname'},
+             {name:'realname_py'},
+             {name:'realname_pyhd'},
+             {name:'reserved'},
+             {name:'salt'},
+             {name:'username'},
+    ]});

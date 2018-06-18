@@ -1,26 +1,146 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.springframework.org/schema/data/jaxb">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>请登录</title>
-    <link th:href="@{/webjars/assets/vendor/bootstrap/3.3.2/css/bootstrap.min.css}" rel="stylesheet"/>
-    <link th:href="@{/login/css/signin.css}" rel="stylesheet"/>
+    <title>login-Danye extjs Demo</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="icon" type="image/x-icon" th:href="@{/static/favicon.ico}">
+    <link th:href="@{/webjars/extjs/6.2.0/classic/theme-triton/resources/theme-triton-all.css}" rel="stylesheet"/>
+    <link th:href="@{/css/login.css}" rel="stylesheet"/>
+
 </head>
 <body>
-<div class="htmleaf-container">
-    <div class="signin">
-        <div class="signin-head"><img th:src="@{/login/images/test/head_120.png}" alt="" class="img-circle"></div>
-        <form id="loginForm" class="form-signin" role="form" method="post">
-            <input name="username" type="text" class="form-control" placeholder="用户名" required  autofocus/>
-            <input type="password" name="password" class="form-control" placeholder="密码" required  autocomplete/>
-            <input class="btn btn-lg btn-warning btn-block" type="submit">
-            <p id="errortip" style="display: none;color:red"></p>
-        </form>
-    </div>
-</div>
-<script th:src="@{/webjars/assets/vendor/jquery/1.11.2/jquery-1.11.2.min.js}"></script>
-<script th:src="@{/login/js/login.js}"></script>
+<script th:src="@{/webjars/extjs/6.2.0/ext-all.js}"></script>
+<script th:src="@{/webjars/extjs/6.2.0/classic/theme-triton/theme-triton.js}"></script>
+<script th:src="@{/webjars/extjs/6.2.0/classic/locale/locale-zh_CN.js}"></script>
+<script th:inline="javascript">
+    var sysVersion = [[${version}]];
+    var sysName = [[${name}]];
+    var sysYear = [[${year}]];
+    var sysCopyright = [[${copyright}]];
+    var sysVendorname = [[${vendorname}]];
+    var sysProductname = [[${productname}]];
+</script>
+<script>
+    Ext.application({
+        name: 'luter-login-form',
+        launch: function () {
+            Ext.tip.QuickTipManager.init();
+            var centerPanel = Ext.create('Ext.panel.Panel', {
+                width: 500,
+                bodyStyle: {
+                    "background": "#fff",
+                    "border-radius": "5px",
+                    // "opacity": "0.1"
+                },
+                layout: {
+                    type: 'vbox',
+                    align: 'center',
+                    pack: 'center'
+                },
+                items: [
+                    {
+                        xtype: 'panel',
+                        title: '<p style="text-align: center;font-size: 24px;color: white;font-weight: 900">'+sysName+'<br>' +
+                        '<span style="font-size: 10px;">'+sysVersion+'</span></p>',
+                        width: 500,
+                        flex: 2
+                    }, {
+                        xtype: 'form',
+                        padding: '30px,10px,0px,0px',
+                        layout: 'form',
+                        width: 500,
+                        border: false,
+                        frame: false,
+                        fieldDefaults: {
+                            labelAlign: 'right',
+                            labelWidth: 200,
+                            labelStyle: 'font-weight:bold;font-size:18px;'
+                        },
+                        cls: 'loginform',
+                        items: [{
+                            xtype: 'textfield',
+                            fieldLabel: '用户名',
+                            name: 'username',
+                            emptyText: '请输入用户名',
+                            allowBlank: false,
+                            // fieldStyle: 'background-color: #ddd; background-image: none;'
+
+                        }, {
+                            xtype: 'textfield',
+                            fieldLabel: '密 码',
+                            name: 'password',
+                            emptyText: '请输入密码',
+                            inputType: 'password',
+                            allowBlank: false,
+                            // fieldStyle: 'background-color: #ddd; background-image: none;'
+
+                        }],
+                        flex: 4,
+                        bbar: new Ext.Toolbar({
+                            dock: 'bottom',
+                            layout: {
+                                pack: 'center'
+                            },
+                            items: [{
+                                text: '登 录',
+                                width: 300,
+                                cls: 'green-btn',
+                                scale: 'large',
+                                buttonAlign: 'center',
+                                bodyStyle: {
+                                    "textAlign": "center"
+                                },
+                                scope: this,
+                                handler: function (el, event) {
+                                    var form = el.up("form").getForm();
+                                    if (form.isValid()) {
+                                        form.submit({
+                                            url: '/login',
+                                            method: 'POST',
+                                            waitTitle: "提示",
+                                            waitMsg: '正在提交数据，请稍后 ……',
+                                            success: function (form, action) {//添加成功后提示消息，并且刷新用户列表数据
+                                                window.location.href = "/index";
+                                            },
+                                            failure: function (form, action) {
+                                                var result = Ext.JSON.decode(action.response.responseText);
+                                                Ext.Msg.show({
+                                                    title: '错误',
+                                                    msg: result.message,
+                                                    width: 350,
+                                                    buttons: Ext.Msg.OK,
+                                                    icon: Ext.MessageBox.ERROR
+                                                });
+                                            }
+                                        });
+                                    } else {
+                                        Ext.toast('表单填写错误，请确认')
+                                    }
+                                },
+                                scope: this
+                            }]
+                        })
+                    }, {
+                        xtype: 'panel',
+                        title: '<p style="text-align: center;font-size: 14px;color: white;font-weight: 900">' + sysYear +sysCopyright+ '</p>',
+                        width: 500,
+                        flex: 1
+                    }
+
+                ]
+            })
+            Ext.create('Ext.container.Viewport', {
+                layout: {
+                    type: 'vbox',
+                    align: 'center',
+                    pack: 'center'
+                },
+                cls: 'bg',
+                items: [centerPanel]
+            });
+        }
+    });
+</script>
 </body>
 </html>

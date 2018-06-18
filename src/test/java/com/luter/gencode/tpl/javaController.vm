@@ -1,0 +1,57 @@
+
+@RestController
+@Slf4j
+@RequestMapping("/${modulename}/${cnamexx}")
+public class ${cnamedx}Controller  extends BaseController {
+@Autowired
+private BaseService ss;
+
+@PostMapping("/list")
+@SysLog(content="查看列表")
+public Object list(HttpServletRequest request, ExtPager pager) {
+ConditionQuery query = new ConditionQuery();
+return ss.listExtPage(${java_class_name}.class, query, pager);
+}
+
+@PostMapping("/add")
+@SysLog(content="新增")
+public Object add(HttpServletRequest request, ${java_class_name} obj) {
+ss.save(obj);
+return ResponseUtils.ok("添加成功");
+}
+
+@PostMapping("/update")
+@SysLog(content="修改")
+public Object update(HttpServletRequest request, ${java_class_name} obj) {
+${java_class_name} record = ss.get(${java_class_name}.class, obj.getId());
+if (null == record) {
+return ResponseUtils.fail("错误:要修改的数据不存在");
+}
+/////这里对要设置的属性进行设置
+/////比如:record.setXXX(obj.getXXX())
+ss.updateEntitie(record);
+return ResponseUtils.ok("修改成功", record);
+}
+
+@PostMapping("/view")
+@SysLog(content="根据ID查看")
+public Object view(HttpServletRequest request, ${java_class_name} obj) {
+${java_class_name} record = ss.get(${java_class_name}.class, obj.getId());
+if (null == record) {
+return ResponseUtils.fail("错误:查找的数据不存在");
+}
+
+return ResponseUtils.ok(record);
+}
+
+@PostMapping("/delete")
+@SysLog(content="删除")
+public Object delete(HttpServletRequest request, ${java_class_name} obj) {
+${java_class_name} record = ss.get(${java_class_name}.class, obj.getId());
+if (null == record) {
+return ResponseUtils.fail("错误:要修改的数据不存在");
+}
+ss.delete(record);
+return ResponseUtils.ok("数据删除成功", record);
+}
+}

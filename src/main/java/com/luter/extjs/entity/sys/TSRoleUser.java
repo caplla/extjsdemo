@@ -1,30 +1,31 @@
 package com.luter.extjs.entity.sys;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.luter.extjs.entity.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
-@Table(name = "t_s_role_user")
 @Entity
 @DynamicInsert
 @DynamicUpdate
+@Table(name = "t_sys_role_user")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class TSRoleUser extends BaseEntity implements Serializable {
-    @ManyToOne()
-    @JoinColumn(name = "role")
-    @NotFound(action = NotFoundAction.EXCEPTION)
-    private TSRole role;
-    @ManyToOne()
-    @JoinColumn(name = "user")
-    @NotFound(action = NotFoundAction.EXCEPTION)
-    private TSUser user;
+@Accessors(chain = true)
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
+public class TSRoleUser extends BaseEntity implements java.io.Serializable {
+    private static final long serialVersionUID = 7554841296624114067L;
+    private String role;
+    private String user;
+
+
 }
