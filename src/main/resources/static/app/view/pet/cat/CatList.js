@@ -71,12 +71,12 @@ Ext.define('luter.view.pet.cat.CatList', {
 
                 {
                     text: baseConfig.model.cat.id,
-                    dataIndex: 'id',hidden:true,
+                    dataIndex: 'id', hidden: true,
                     flex: 1
                 },
                 {
                     text: baseConfig.model.cat.created_at,
-                    dataIndex: 'created_at',hidden:true,
+                    dataIndex: 'created_at', hidden: true,
                     flex: 1
                 },
                 {
@@ -86,12 +86,12 @@ Ext.define('luter.view.pet.cat.CatList', {
                 },
                 {
                     text: baseConfig.model.cat.update_at,
-                    dataIndex: 'update_at',hidden:true,
+                    dataIndex: 'update_at', hidden: true,
                     flex: 1
                 },
                 {
                     text: baseConfig.model.cat.version,
-                    dataIndex: 'version',hidden:true,
+                    dataIndex: 'version', hidden: true,
                     flex: 1
                 },
                 {
@@ -127,6 +127,32 @@ Ext.define('luter.view.pet.cat.CatList', {
                     var win = Ext.create('luter.view.pet.cat.CatAdd', {animateTarget: this, shadow: false});
                     win.loadView();
                     win.show();
+
+                }
+            }, {
+                text: '看视频',
+                iconCls: baseConfig.appicon.image,
+                tooltip: '看视频',
+                handler: function () {
+                    Ext.create('Ext.window.Window', {
+                        title: '看片',
+                        width: 500,
+                        autoHeight: true,
+                        minHeight: 200,
+                        constrain: true,
+                        modal: true,
+                        maximizable: true,
+                        layout: "fit",
+                        items: Ext.create('luter.ux.Video', {
+                            autoplay: true,
+                            controls: [],
+                            poster: '',
+                            start: 0,
+                            loopstart: true,
+                            loopend: false,
+                            src: 'http://graduate.cqnu.edu.cn/creategroup/UploadFiles_5832/f0168ku0mr4.p703.1.mp4'
+                        })
+                    }).show();
 
                 }
             }]

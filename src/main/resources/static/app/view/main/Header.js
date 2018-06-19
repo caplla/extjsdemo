@@ -88,17 +88,17 @@ Ext.define('luter.view.main.Header', {
                                     message: '确认注销并退出系统？',
                                     fn: function (btn) {
                                         if (btn === 'yes') {
-                                            // Ext.Ajax.request({
-                                            //     url: 'logout',
-                                            //     method: 'POST',
-                                            //     success: function (response, options) {
-                                            //         window.location.href = "/login";
-                                            //     },
-                                            //     failure: function (response, options) {
-                                            //         DealAjaxResponse(response);
-                                            //     }
-                                            // });
-                                            window.location.href="./login.html"
+                                            Ext.Ajax.request({
+                                                url: 'logout',
+                                                method: 'POST',
+                                                success: function (response, options) {
+                                                    window.location.href = "/login";
+                                                },
+                                                failure: function (response, options) {
+                                                    DealAjaxResponse(response);
+                                                }
+                                            });
+                                            window.location.href = "/login"
 
                                         } else {
                                             return false;
